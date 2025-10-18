@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" fill="none">
+  <!-- Background circle -->
+  <circle cx="90" cy="90" r="85" fill="#3B82F6"/>
+  
+  <!-- Image outline -->
+  <rect x="35" y="35" width="110" height="110" rx="10" stroke="white" stroke-width="10" fill="none"/>
+  
+  <!-- Conversion arrow -->
+  <path d="M125 70L105 90L125 110" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M55 90H105" stroke="white" stroke-width="10" stroke-linecap="round"/>
+</svg>
