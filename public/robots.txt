@@ -1,0 +1,41 @@
+# robots.txt for Image Converter App
+# https://img-vert.web.app/
+
+User-agent: *
+Allow: /
+
+# Disallow access to any potential private or admin areas if they exist
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /cache/
+
+# Allow crawling of all main sections
+Allow: /$
+Allow: /*.html$
+
+# Sitemap location
+Sitemap: https://img-vert.web.app/sitemap.xml
+
+# Crawl delay to prevent overloading the client-side application
+Crawl-delay: 10
+
+# Specific directives for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 10
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 10
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 10
+
+# Disallow any potential sensitive paths
+Disallow: /*?*
+Disallow: /api/
+Disallow: /uploads/
+Disallow: /images/converted/
+Disallow: /images/original/

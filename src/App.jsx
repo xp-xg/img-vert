@@ -1,13 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Routes, Route } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { saveAs } from 'file-saver';
 import AppLogo from './components/AppLogo';
 import ErrorBoundary from './components/ErrorBoundary';
 import AdComponent from './components/AdComponent';
+import Navigation from './components/Navigation';
+import ImageFormatsGuide from './pages/ImageFormatsGuide';
+import ImageOptimizationTutorial from './pages/ImageOptimizationTutorial';
+import AdvancedTechniques from './pages/AdvancedTechniques';
+import IndustryUseCases from './pages/IndustryUseCases';
 import errorLogger from './services/errorLogger';
 
-const App = () => {
+const MainApp = ({ darkMode, setDarkMode }) => {
   const { t, i18n } = useTranslation();
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -17,7 +23,6 @@ const App = () => {
   const [height, setHeight] = useState('');
   const [aspectRatio, setAspectRatio] = useState(true);
   const [originalDimensions, setOriginalDimensions] = useState({ width: 0, height: 0 });
-  const [darkMode, setDarkMode] = useState(false);
   const [language, setLanguage] = useState('en');
   const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -27,6 +32,8 @@ const App = () => {
   const [showTermsOfService, setShowTermsOfService] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
@@ -38,21 +45,6 @@ const App = () => {
   
   const fileInputRef = useRef(null);
   const imgRef = useRef(null);
-
-  // Initialize dark mode based on system preference
-  useEffect(() => {
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDarkMode(isDark);
-  }, []);
-
-  // Apply dark mode class to body
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
 
   // Handle language change
   const changeLanguage = (lng) => {
@@ -553,7 +545,27 @@ const App = () => {
         {/* Main Content */}
         <main className="max-w-4xl mx-auto">
           {/* Ad Placement - Top Banner */}
-          <section className={`rounded-xl p-4 mb-6 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+          <section className={`rounded-xl p-6 mb-8 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+            <div className="text-center mb-4">
+              <h2 className="text-xl font-bold mb-2 text-blue-600 dark:text-blue-400">{t('whyConvertImages')}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                {t('whyConvertImagesDesc')}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('compressionTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('compressionDesc')}</p>
+              </div>
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('compatibilityTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('compatibilityDesc')}</p>
+              </div>
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('qualityTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('qualityDesc')}</p>
+              </div>
+            </div>
             <div className="text-center py-2">
               <AdComponent 
                 adSlot="TOP_BANNER_AD_SLOT" // Replace with your actual ad slot ID from AdSense
@@ -593,46 +605,48 @@ const App = () => {
             </div>
           </section>
 
-          {/* How to Use Guide Card - SEO Optimized */}
-          <section className={`mb-8 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-            <h2 className="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">{t('guideTitle')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">1</div>
-                <div>
-                  <h3 className="font-semibold">{t('guideStep1Title')}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep1Desc')}</p>
+          {/* How to Use Guide Card - SEO Optimized (shown when no image uploaded) */}
+          {!previewUrl && (
+            <section className={`mb-8 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <h2 className="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">{t('guideTitle')}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">1</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep1Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep1Desc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">2</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep2Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep2Desc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">3</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep3Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep3Desc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">4</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep4Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep4Desc')}</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">2</div>
-                <div>
-                  <h3 className="font-semibold">{t('guideStep2Title')}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep2Desc')}</p>
-                </div>
+              <div className="pt-2">
+                <p className="text-sm italic text-gray-500 dark:text-gray-400">
+                  <strong>{t('privacyNotice')}:</strong> {t('guidePrivacyNotice')} 
+                  <span className="hidden"> Image Converter tool supports batch conversion, online image editor, image compressor, image resizer, image format converter for photographers, designers, and web developers.</span>
+                </p>
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">3</div>
-                <div>
-                  <h3 className="font-semibold">{t('guideStep3Title')}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep3Desc')}</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">4</div>
-                <div>
-                  <h3 className="font-semibold">{t('guideStep4Title')}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep4Desc')}</p>
-                </div>
-              </div>
-            </div>
-            <div className="pt-2">
-              <p className="text-sm italic text-gray-500 dark:text-gray-400">
-                <strong>{t('privacyNotice')}:</strong> {t('guidePrivacyNotice')} 
-                <span className="hidden"> Image Converter tool supports batch conversion, online image editor, image compressor, image resizer, image format converter for photographers, designers, and web developers.</span>
-              </p>
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* Preview and Conversion Section */}
           {previewUrl && (
@@ -750,9 +764,14 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Ad Placement 2 */}
               <div className={`rounded-lg p-4 mt-4 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                <div className="text-center">
+                <div className="text-center mb-4">
+                  <h2 className="text-xl font-bold mb-2 text-blue-600 dark:text-blue-400">{t('conversionBenefits')}</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    {t('conversionBenefitsDesc')}
+                  </p>
+                </div>
+                <div className="text-center py-2">
                   <AdComponent 
                     adSlot="CONVERSION_OPTIONS_AD_SLOT" // Replace with your actual ad slot ID from AdSense
                     adFormat="rectangle"
@@ -761,7 +780,6 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex flex-wrap gap-4 mt-6">
                 <button
                   onClick={handleConvert}
@@ -803,8 +821,71 @@ const App = () => {
             </section>
           )}
 
+          {/* How to Use Guide Card - SEO Optimized (only shown after image upload) */}
+          {previewUrl && (
+            <section className={`mb-8 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <h2 className="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400">{t('guideTitle')}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">1</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep1Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep1Desc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">2</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep2Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep2Desc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">3</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep3Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep3Desc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">4</div>
+                  <div>
+                    <h3 className="font-semibold">{t('guideStep4Title')}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{t('guideStep4Desc')}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-2">
+                <p className="text-sm italic text-gray-500 dark:text-gray-400">
+                  <strong>{t('privacyNotice')}:</strong> {t('guidePrivacyNotice')} 
+                  <span className="hidden"> Image Converter tool supports batch conversion, online image editor, image compressor, image resizer, image format converter for photographers, designers, and web developers.</span>
+                </p>
+              </div>
+            </section>
+          )}
+
           {/* Ad Placement - Middle Banner */}
-          <section className={`rounded-xl p-4 mb-6 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+          <section className={`rounded-xl p-4 mb-6 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} border-0`}>
+            <div className="text-center mb-4">
+              <h2 className="text-xl font-bold mb-2 text-blue-600 dark:text-blue-400">{t('seoImageTips')}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                {t('seoImageTipsDesc')}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('compressionTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('compressionDesc')}</p>
+              </div>
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('compatibilityTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('compatibilityDesc')}</p>
+              </div>
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('qualityTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('qualityDesc')}</p>
+              </div>
+            </div>
             <div className="text-center py-2">
               <AdComponent 
                 adSlot="MIDDLE_BANNER_AD_SLOT" // Replace with your actual ad slot ID from AdSense
@@ -816,13 +897,32 @@ const App = () => {
 
           {/* Ad Placement 1 */}
           <section className={`rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} shadow-lg mb-8`}>
+            <div className="text-center mb-4">
+              <h2 className="text-xl font-bold mb-2 text-blue-600 dark:text-blue-400">{t('imageFormatsGuide')}</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                {t('imageFormatsGuideDesc')}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('pngFormatTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('pngFormatDesc')}</p>
+              </div>
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('jpegFormatTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('jpegFormatDesc')}</p>
+              </div>
+              <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+                <h3 className="font-semibold text-sm mb-1">{t('webpFormatTitle')}</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">{t('webpFormatDesc')}</p>
+              </div>
+            </div>
             <div className="text-center py-4">
               <AdComponent 
                 adSlot="CONTENT_AD_SLOT" // Replace with your actual ad slot ID from AdSense
                 adFormat="rectangle"
                 style={{ display: "inline-block", width: "336px", height: "280px" }}
               />
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Advertisement</p>
             </div>
           </section>
 
@@ -839,6 +939,26 @@ const App = () => {
 
         {/* Footer Ad */}
         <div className={`rounded-xl p-4 mb-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+          <div className="text-center mb-4">
+            <h2 className="text-xl font-bold mb-2 text-blue-600 dark:text-blue-400">{t('advancedOptimizationTechniques')}</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+              {t('advancedOptimizationTechniquesDesc')}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+              <h3 className="font-semibold text-sm mb-1">{t('compressionTechniques')}</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300">{t('adaptiveCompressionDesc')}</p>
+            </div>
+            <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+              <h3 className="font-semibold text-sm mb-1">{t('noiseReduction')}</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300">{t('aiDenoisingDesc')}</p>
+            </div>
+            <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-white'}`}>
+              <h3 className="font-semibold text-sm mb-1">{t('sharpeningTechniques')}</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300">{t('smartSharpeningDesc')}</p>
+            </div>
+          </div>
           <div className="text-center">
             <AdComponent 
               adSlot="FOOTER_AD_SLOT" // Replace with your actual ad slot ID from AdSense
@@ -884,7 +1004,9 @@ const App = () => {
         {/* Footer */}
         <footer className="mt-6 text-center text-gray-600 dark:text-gray-400 text-sm">
           <div className="flex flex-wrap justify-center gap-4 mb-2">
+            <button onClick={() => setShowAbout(true)} className="hover:underline">{t('about')}</button>
             <button onClick={() => setShowPrivacyPolicy(true)} className="hover:underline">{t('privacyPolicy')}</button>
+            <button onClick={() => setShowDisclaimer(true)} className="hover:underline">{t('disclaimer')}</button>
             <button onClick={() => setShowTermsOfService(true)} className="hover:underline">{t('termsOfService')}</button>
             <button onClick={() => setShowContact(true)} className="hover:underline">{t('contact')}</button>
             <button onClick={() => setShowHelp(true)} className="hover:underline">{t('help')}</button>
@@ -1144,9 +1266,157 @@ const App = () => {
             </div>
           </div>
         )}
+        
+        {/* About Modal */}
+        {showAbout && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className={`rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">{t('about')}</h2>
+                <button 
+                  onClick={() => setShowAbout(false)} 
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="space-y-6">
+                <section>
+                  <h3 className="text-xl font-semibold mb-3">{t('aboutImageConverter')}</h3>
+                  <p className="mb-4">{t('aboutImageConverterDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-xl font-semibold mb-3">{t('mission')}</h3>
+                  <p className="mb-4">{t('missionDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-xl font-semibold mb-3">{t('features')}</h3>
+                  <ul className="list-disc list-inside space-y-2 mb-4">
+                    <li>{t('feature1')}</li>
+                    <li>{t('feature2')}</li>
+                    <li>{t('feature3')}</li>
+                    <li>{t('feature4')}</li>
+                  </ul>
+                </section>
+                
+                <section>
+                  <h3 className="text-xl font-semibold mb-3">{t('whyUseOurService')}</h3>
+                  <p className="mb-4">{t('whyUseOurServiceDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-xl font-semibold mb-3">{t('team')}</h3>
+                  <p className="mb-4">{t('teamDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-xl font-semibold mb-3">{t('contactInfo')}</h3>
+                  <p className="mb-2">{t('contactInfoDesc')}</p>
+                  <button 
+                    onClick={() => {setShowContact(true); setShowAbout(false);}} 
+                    className="text-blue-600 hover:underline dark:text-blue-400"
+                  >
+                    {t('contactFormLink')}
+                  </button>
+                  <p className="mt-2">{t('yearFounded')}: {new Date().getFullYear()}</p>
+                </section>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Disclaimer Modal */}
+        {showDisclaimer && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className={`rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`} role="dialog" aria-modal="true">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">{t('disclaimer')}</h2>
+                <button 
+                  onClick={() => setShowDisclaimer(false)} 
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
+                  aria-label={t('closeDisclaimer')}
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="space-y-6">
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerGeneral')}</h3>
+                  <p className="mb-4">{t('disclaimerGeneralDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerContent')}</h3>
+                  <p className="mb-4">{t('disclaimerContentDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerLinks')}</h3>
+                  <p className="mb-4">{t('disclaimerLinksDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerLimitation')}</h3>
+                  <p className="mb-4">{t('disclaimerLimitationDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerAccuracy')}</h3>
+                  <p className="mb-4">{t('disclaimerAccuracyDesc')}</p>
+                </section>
+                
+                <section>
+                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerLastUpdated')}</h3>
+                  <p>{t('lastUpdated', { date: new Date().toLocaleDateString() })}</p>
+                </section>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
     </ErrorBoundary>
+  );
+};
+
+const App = () => {
+  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState('en');
+  
+  // Initialize dark mode based on system preference
+  useEffect(() => {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(isDark);
+  }, []);
+
+  // Apply dark mode class to body
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  // Handle language change
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setLanguage(lng);
+  };
+
+  return (
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <Navigation darkMode={darkMode} setDarkMode={setDarkMode} />
+      <Routes>
+        <Route path="/" element={<MainApp darkMode={darkMode} setDarkMode={setDarkMode} />} />
+        <Route path="/formats" element={<ImageFormatsGuide />} />
+        <Route path="/optimization" element={<ImageOptimizationTutorial />} />
+        <Route path="/advanced" element={<AdvancedTechniques />} />
+        <Route path="/use-cases" element={<IndustryUseCases />} />
+      </Routes>
+    </div>
   );
 };
 

@@ -33,16 +33,18 @@ const AdComponent = ({
   }, []);
 
   return (
-    <ins
-      ref={adRef}
-      className={`adsbygoogle ${className}`}
-      style={style}
-      data-ad-client="ca-pub-9891009708137483"
-      data-ad-slot={adSlot}
-      data-ad-format={adFormat}
-      {...(responsive && { 'data-full-width-responsive': 'true' })}
-      {...(adLayoutKey && { 'data-ad-layout-key': adLayoutKey })}
-    />
+    <div className="ad-container">
+      <ins
+        ref={adRef}
+        className={`adsbygoogle ${className}`}
+        style={style}
+        data-ad-client="ca-pub-9891009708137483"
+        data-ad-slot={adSlot}
+        data-ad-format={adFormat}
+        {...(responsive && { 'data-full-width-responsive': 'true' })}
+        {...(adLayoutKey && { 'data-ad-layout-key': adLayoutKey })}
+      />
+    </div>
   );
 };
 
