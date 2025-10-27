@@ -14,6 +14,14 @@ Disallow: /cache/
 Allow: /$
 Allow: /*.html$
 
+# Allow crawling of new pages
+Allow: /about$
+Allow: /privacy$
+Allow: /disclaimer$
+Allow: /terms$
+Allow: /contact$
+Allow: /help$
+
 # Sitemap location
 Sitemap: https://img-vert.web.app/sitemap.xml
 

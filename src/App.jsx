@@ -11,6 +11,12 @@ import ImageFormatsGuide from './pages/ImageFormatsGuide';
 import ImageOptimizationTutorial from './pages/ImageOptimizationTutorial';
 import AdvancedTechniques from './pages/AdvancedTechniques';
 import IndustryUseCases from './pages/IndustryUseCases';
+import AboutPage from './pages/AboutPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import DisclaimerPage from './pages/DisclaimerPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import ContactPage from './pages/ContactPage';
+import HelpPage from './pages/HelpPage';
 import errorLogger from './services/errorLogger';
 
 const MainApp = ({ darkMode, setDarkMode }) => {
@@ -28,20 +34,8 @@ const MainApp = ({ darkMode, setDarkMode }) => {
   const [imageFile, setImageFile] = useState(null);
   const [showConsentBanner, setShowConsentBanner] = useState(true); // State for consent banner
   const [consentChoice, setConsentChoice] = useState(null); // 'personalized', 'nonPersonalized', or null
-  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
-  const [showTermsOfService, setShowTermsOfService] = useState(false);
-  const [showContact, setShowContact] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
-  const [showAbout, setShowAbout] = useState(false);
-  const [showDisclaimer, setShowDisclaimer] = useState(false);
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [contactErrors, setContactErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
   
   const fileInputRef = useRef(null);
   const imgRef = useRef(null);
@@ -318,101 +312,6 @@ const MainApp = ({ darkMode, setDarkMode }) => {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  // Handle contact form changes
-  const handleContactChange = (e) => {
-    const { id, value } = e.target;
-    setContactForm({
-      ...contactForm,
-      [id]: value
-    });
-    
-    // Clear error when user starts typing
-    if (contactErrors[id]) {
-      setContactErrors({
-        ...contactErrors,
-        [id]: ''
-      });
-    }
-  };
-
-  // Validate contact form
-  const validateContactForm = () => {
-    const errors = {};
-    
-    if (!contactForm.name.trim()) {
-      errors.name = 'Name is required';
-    }
-    
-    if (!contactForm.email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactForm.email)) {
-      errors.email = 'Please enter a valid email address';
-    }
-    
-    if (!contactForm.subject.trim()) {
-      errors.subject = 'Subject is required';
-    }
-    
-    if (!contactForm.message.trim()) {
-      errors.message = 'Message is required';
-    } else if (contactForm.message.length < 10) {
-      errors.message = 'Message should be at least 10 characters long';
-    }
-    
-    return errors;
-  };
-
-  // Handle contact form submission
-  const handleContactSubmit = (e) => {
-    e.preventDefault();
-    try {
-      const errors = validateContactForm();
-      
-      if (Object.keys(errors).length > 0) {
-        setContactErrors(errors);
-        return;
-      }
-      
-      setIsSubmitting(true);
-      
-      // Create mailto link with form data
-      const recipient = 'imagecpro@gmail.com';
-      const subject = encodeURIComponent(contactForm.subject);
-      const body = encodeURIComponent(`Name: ${contactForm.name}\nEmail: ${contactForm.email}\n\n${contactForm.message}`);
-      
-      const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${body}`;
-      
-      // Show notification to user
-      toast.success('Opening your email client...');
-      
-      // Reset form and close modal
-      setContactForm({ name: '', email: '', subject: '', message: '' });
-      setShowContact(false);
-      
-      // Open the user's email client
-      window.location.href = mailtoLink;
-      
-      // Reset submitting state after a short delay
-      setTimeout(() => {
-        setIsSubmitting(false);
-      }, 1000);
-    } catch (error) {
-      console.error('Error during contact form submission:', error);
-      errorLogger.logError(error, { 
-        action: 'handleContactSubmit',
-        formData: {
-          name: contactForm.name,
-          email: contactForm.email,
-          subject: contactForm.subject,
-          hasMessage: !!contactForm.message
-        }
-      });
-      
-      toast.error(t('errorConversion'));
-      setIsSubmitting(false);
-    }
   };
 
   // Handle consent choice for ads
@@ -1004,377 +903,24 @@ const MainApp = ({ darkMode, setDarkMode }) => {
         {/* Footer */}
         <footer className="mt-6 text-center text-gray-600 dark:text-gray-400 text-sm">
           <div className="flex flex-wrap justify-center gap-4 mb-2">
-            <button onClick={() => setShowAbout(true)} className="hover:underline">{t('about')}</button>
-            <button onClick={() => setShowPrivacyPolicy(true)} className="hover:underline">{t('privacyPolicy')}</button>
-            <button onClick={() => setShowDisclaimer(true)} className="hover:underline">{t('disclaimer')}</button>
-            <button onClick={() => setShowTermsOfService(true)} className="hover:underline">{t('termsOfService')}</button>
-            <button onClick={() => setShowContact(true)} className="hover:underline">{t('contact')}</button>
-            <button onClick={() => setShowHelp(true)} className="hover:underline">{t('help')}</button>
+            <a href="/about" className="hover:underline">{t('about')}</a>
+            <a href="/privacy" className="hover:underline">{t('privacyPolicy')}</a>
+            <a href="/disclaimer" className="hover:underline">{t('disclaimer')}</a>
+            <a href="/terms" className="hover:underline">{t('termsOfService')}</a>
+            <a href="/contact" className="hover:underline">{t('contact')}</a>
+            <a href="/help" className="hover:underline">{t('help')}</a>
           </div>
           <p>{t('copyright', { year: new Date().getFullYear() })}</p>
         </footer>
 
-        {/* Privacy Policy Modal */}
-        {showPrivacyPolicy && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className={`rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">{t('privacyPolicyTitle')}</h2>
-                <button 
-                  onClick={() => setShowPrivacyPolicy(false)} 
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
-                >
-                  &times;
-                </button>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold">{t('informationWeCollect')}</h3>
-                  <p>{t('informationWeCollectDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('howWeUseInfo')}</h3>
-                  <p>{t('howWeUseInfoDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('dataSecurity')}</h3>
-                  <p>{t('dataSecurityDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('cookies')}</h3>
-                  <p>{t('cookiesDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('thirdPartyServices')}</h3>
-                  <p>{t('thirdPartyServicesDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('childrenPrivacy')}</h3>
-                  <p>{t('childrenPrivacyDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('changesToPolicy')}</h3>
-                  <p>{t('changesToPolicyDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('privacyPolicyContact')}</h3>
-                  <p>{t('privacyPolicyContactDesc')}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
-        {/* Terms of Service Modal */}
-        {showTermsOfService && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className={`rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">{t('termsOfServiceTitle')}</h2>
-                <button 
-                  onClick={() => setShowTermsOfService(false)} 
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
-                >
-                  &times;
-                </button>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold">{t('acceptanceOfTerms')}</h3>
-                  <p>{t('acceptanceOfTermsDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('useOfService')}</h3>
-                  <p>{t('useOfServiceDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('prohibitedUses')}</h3>
-                  <p>{t('prohibitedUsesDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('noWarranties')}</h3>
-                  <p>{t('noWarrantiesDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('limitationOfLiability')}</h3>
-                  <p>{t('limitationOfLiabilityDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('intellectualProperty')}</h3>
-                  <p>{t('intellectualPropertyDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('changesTerms')}</h3>
-                  <p>{t('changesTermsDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('governingLaw')}</h3>
-                  <p>{t('governingLawDesc')}</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold">{t('termsContactInfo')}</h3>
-                  <p>{t('termsContactInfoDesc')}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
-        {/* Contact Modal */}
-        {showContact && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className={`rounded-xl max-w-2xl w-full p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">{t('contactTitle')}</h2>
-                <button 
-                  onClick={() => setShowContact(false)} 
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
-                >
-                  &times;
-                </button>
-              </div>
-              <p className="mb-4">{t('contactSubtitle')}</p>
-              
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-1">{t('nameLabel')}</label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={contactForm.name}
-                      onChange={handleContactChange}
-                      className={`w-full p-2 border rounded-lg ${contactErrors.name ? 'border-red-500' : ''} ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                      placeholder={t('nameLabelField')}
-                    />
-                    {contactErrors.name && <p className="text-red-500 text-sm mt-1">{contactErrors.name}</p>}
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-1">{t('emailLabel')}</label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={contactForm.email}
-                      onChange={handleContactChange}
-                      className={`w-full p-2 border rounded-lg ${contactErrors.email ? 'border-red-500' : ''} ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                      placeholder={t('emailLabelField')}
-                    />
-                    {contactErrors.email && <p className="text-red-500 text-sm mt-1">{contactErrors.email}</p>}
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium mb-1">{t('subjectLabel')}</label>
-                  <input
-                    type="text"
-                    id="subject"
-                    value={contactForm.subject}
-                    onChange={handleContactChange}
-                    className={`w-full p-2 border rounded-lg ${contactErrors.subject ? 'border-red-500' : ''} ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                    placeholder={t('subjectLabelField')}
-                  />
-                  {contactErrors.subject && <p className="text-red-500 text-sm mt-1">{contactErrors.subject}</p>}
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-1">{t('messageLabel')}</label>
-                  <textarea
-                    id="message"
-                    value={contactForm.message}
-                    onChange={handleContactChange}
-                    rows="5"
-                    className={`w-full p-2 border rounded-lg ${contactErrors.message ? 'border-red-500' : ''} ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                    placeholder={t('messagePlaceholder')}
-                  ></textarea>
-                  {contactErrors.message && <p className="text-red-500 text-sm mt-1">{contactErrors.message}</p>}
-                </div>
-                
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-                  >
-                    {t('openEmailClient')}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+
+
+
         
-        {/* Help Modal */}
-        {showHelp && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className={`rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">{t('helpTitle')}</h2>
-                <button 
-                  onClick={() => setShowHelp(false)} 
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
-                >
-                  &times;
-                </button>
-              </div>
-              
-              <div className="space-y-6">
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('gettingStarted')}</h3>
-                  <ol className="list-decimal list-inside space-y-2">
-                    <li>{t('step1')}</li>
-                    <li>{t('step2')}</li>
-                    <li>{t('step3')}</li>
-                    <li>{t('step4')}</li>
-                    <li>{t('step5')}</li>
-                  </ol>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('supportedFormatsTitle')}</h3>
-                  <ul className="list-disc list-inside space-y-2">
-                    <li>{t('inputFormats')}</li>
-                    <li>{t('outputFormats')}</li>
-                  </ul>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('imageQuality')}</h3>
-                  <p className="mb-2">{t('imageQualityDesc1')}</p>
-                  <p>{t('imageQualityDesc2')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('troubleshooting')}</h3>
-                  <ul className="list-disc list-inside space-y-2">
-                    <li>{t('troubleshootingItem1')}</li>
-                    <li>{t('troubleshootingItem2')}</li>
-                    <li>{t('troubleshootingItem3')}</li>
-                    <li>{t('troubleshootingItem4')}</li>
-                  </ul>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('privacyInfo')}</h3>
-                  <p className="mb-2">{t('privacyInfoDesc1')}</p>
-                  <p>{t('privacyInfoDesc2')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('needMoreHelp')}</h3>
-                  <p>{t('needMoreHelpDesc')}</p>
-                </section>
-              </div>
-            </div>
-          </div>
-        )}
+
         
-        {/* About Modal */}
-        {showAbout && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className={`rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">{t('about')}</h2>
-                <button 
-                  onClick={() => setShowAbout(false)} 
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
-                >
-                  &times;
-                </button>
-              </div>
-              <div className="space-y-6">
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('aboutImageConverter')}</h3>
-                  <p className="mb-4">{t('aboutImageConverterDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('mission')}</h3>
-                  <p className="mb-4">{t('missionDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('features')}</h3>
-                  <ul className="list-disc list-inside space-y-2 mb-4">
-                    <li>{t('feature1')}</li>
-                    <li>{t('feature2')}</li>
-                    <li>{t('feature3')}</li>
-                    <li>{t('feature4')}</li>
-                  </ul>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('whyUseOurService')}</h3>
-                  <p className="mb-4">{t('whyUseOurServiceDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('team')}</h3>
-                  <p className="mb-4">{t('teamDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-xl font-semibold mb-3">{t('contactInfo')}</h3>
-                  <p className="mb-2">{t('contactInfoDesc')}</p>
-                  <button 
-                    onClick={() => {setShowContact(true); setShowAbout(false);}} 
-                    className="text-blue-600 hover:underline dark:text-blue-400"
-                  >
-                    {t('contactFormLink')}
-                  </button>
-                  <p className="mt-2">{t('yearFounded')}: {new Date().getFullYear()}</p>
-                </section>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Disclaimer Modal */}
-        {showDisclaimer && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className={`rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`} role="dialog" aria-modal="true">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">{t('disclaimer')}</h2>
-                <button 
-                  onClick={() => setShowDisclaimer(false)} 
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl"
-                  aria-label={t('closeDisclaimer')}
-                >
-                  &times;
-                </button>
-              </div>
-              <div className="space-y-6">
-                <section>
-                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerGeneral')}</h3>
-                  <p className="mb-4">{t('disclaimerGeneralDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerContent')}</h3>
-                  <p className="mb-4">{t('disclaimerContentDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerLinks')}</h3>
-                  <p className="mb-4">{t('disclaimerLinksDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerLimitation')}</h3>
-                  <p className="mb-4">{t('disclaimerLimitationDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerAccuracy')}</h3>
-                  <p className="mb-4">{t('disclaimerAccuracyDesc')}</p>
-                </section>
-                
-                <section>
-                  <h3 className="text-lg font-semibold mb-2">{t('disclaimerLastUpdated')}</h3>
-                  <p>{t('lastUpdated', { date: new Date().toLocaleDateString() })}</p>
-                </section>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
     </ErrorBoundary>
@@ -1415,6 +961,12 @@ const App = () => {
         <Route path="/optimization" element={<ImageOptimizationTutorial />} />
         <Route path="/advanced" element={<AdvancedTechniques />} />
         <Route path="/use-cases" element={<IndustryUseCases />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/disclaimer" element={<DisclaimerPage />} />
+        <Route path="/terms" element={<TermsOfServicePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/help" element={<HelpPage />} />
       </Routes>
     </div>
   );

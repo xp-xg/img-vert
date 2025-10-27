@@ -133,10 +133,23 @@ For proper deployment, ensure your server is configured to:
 ```
 src/
 ├── components/     # Reusable UI components
-├── App.jsx         # Main application component
-├── App.css         # Main styles
+├── pages/         # Separate page components (About, Privacy Policy, etc.)
+├── App.jsx         # Main application component with routing
 └── ...
 ```
+
+## Separate Pages
+
+This application now includes dedicated pages for legal and informational content:
+
+- **About** (`/about`) - Information about the Image Converter application
+- **Privacy Policy** (`/privacy`) - Detailed privacy policy documentation
+- **Disclaimer** (`/disclaimer`) - Legal disclaimer for the service
+- **Terms of Service** (`/terms`) - Terms of service agreement
+- **Contact** (`/contact`) - Contact form for user inquiries
+- **Help & Support** (`/help`) - Help documentation and support resources
+
+These pages are implemented as separate React components with dedicated routes rather than modals, improving SEO and user experience.
 
 ## Image Conversion Process
 
