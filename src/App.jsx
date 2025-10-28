@@ -6,6 +6,11 @@ import { saveAs } from 'file-saver';
 import AppLogo from './components/AppLogo';
 import ErrorBoundary from './components/ErrorBoundary';
 import AdComponent from './components/AdComponent';
+import AdsterraBanner from './components/AdsterraBanner';
+import AdsterraPopunder from './components/AdsterraPopunder';
+import AdsterraNativeBanner from './components/AdsterraNativeBanner';
+import AdsterraSmartlink from './components/AdsterraSmartlink';
+import AdsterraSocialBar from './components/AdsterraSocialBar';
 import Navigation from './components/Navigation';
 import ImageFormatsGuide from './pages/ImageFormatsGuide';
 import ImageOptimizationTutorial from './pages/ImageOptimizationTutorial';
@@ -34,6 +39,7 @@ const MainApp = ({ darkMode, setDarkMode }) => {
   const [imageFile, setImageFile] = useState(null);
   const [showConsentBanner, setShowConsentBanner] = useState(true); // State for consent banner
   const [consentChoice, setConsentChoice] = useState(null); // 'personalized', 'nonPersonalized', or null
+  const [showAdsterraAds, setShowAdsterraAds] = useState(true); // State to control Adsterra ads
 
 
   
@@ -408,6 +414,12 @@ const MainApp = ({ darkMode, setDarkMode }) => {
   return (
     <ErrorBoundary>
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      {/* Adsterra Popunder - Invisible component that triggers popunder ads */}
+      {showAdsterraAds && (
+        <AdsterraPopunder 
+          srcUrl="//pl27941837.effectivegatecpm.com/61/25/2b/61252b0d7a0503d7cc99a16886179cc2.js" 
+        />
+      )}
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
@@ -440,6 +452,18 @@ const MainApp = ({ darkMode, setDarkMode }) => {
             </button>
           </div>
         </header>
+
+        {/* Adsterra Top Banner - Alternative revenue source */}
+        {showAdsterraAds && (
+          <div className="text-center py-4 mb-8">
+            <AdsterraBanner 
+              adKey="352e262ab4715f1de7644af0a96eb384"
+              width={728}
+              height={90}
+              style={{ display: "inline-block", width: "728px", height: "90px" }}
+            />
+          </div>
+        )}
 
         {/* Main Content */}
         <main className="max-w-4xl mx-auto">
@@ -677,6 +701,17 @@ const MainApp = ({ darkMode, setDarkMode }) => {
                     style={{ display: "inline-block", width: "300px", height: "100px" }}
                   />
                 </div>
+                {/* Adsterra Banner Ad - Alternative revenue source */}
+                {showAdsterraAds && (
+                  <div className="text-center py-2 mt-4">
+                    <AdsterraBanner 
+                      adKey="352e262ab4715f1de7644af0a96eb384"
+                      width={728}
+                      height={90}
+                      style={{ display: "inline-block", width: "728px", height: "90px" }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-4 mt-6">
@@ -823,6 +858,15 @@ const MainApp = ({ darkMode, setDarkMode }) => {
                 style={{ display: "inline-block", width: "336px", height: "280px" }}
               />
             </div>
+            {/* Adsterra Smartlink - Alternative revenue source */}
+            {showAdsterraAds && (
+              <div className="text-center py-4 mt-4">
+                <AdsterraSmartlink 
+                  linkUrl="https://www.effectivegatecpm.com/rnvbg7y1n?key=b8910e018443b8a9f34b07b66d472f12"
+                  style={{ display: "inline-block", width: "100%" }}
+                />
+              </div>
+            )}
           </section>
 
           {/* Privacy Notice */}
@@ -866,6 +910,19 @@ const MainApp = ({ darkMode, setDarkMode }) => {
             />
           </div>
         </div>
+
+        {/* Adsterra Native Banner - Alternative revenue source */}
+        {showAdsterraAds && (
+          <div className={`rounded-xl p-4 mb-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
+            <div className="text-center">
+              <AdsterraNativeBanner 
+                scriptSrc="//pl27941844.effectivegatecpm.com/c3ea8053002a10709d9cfaf965cf9f2a/invoke.js"
+                containerId="container-c3ea8053002a10709d9cfaf965cf9f2a"
+                style={{ display: "inline-block", width: "100%" }}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Consent Banner for EU Users */} 
         {showConsentBanner && (
@@ -912,6 +969,16 @@ const MainApp = ({ darkMode, setDarkMode }) => {
           </div>
           <p>{t('copyright', { year: new Date().getFullYear() })}</p>
         </footer>
+
+        {/* Adsterra Social Bar - Alternative revenue source */}
+        {showAdsterraAds && (
+          <div className="mt-4">
+            <AdsterraSocialBar 
+              srcUrl="//pl27941766.effectivegatecpm.com/f3/6c/4d/f36c4dceaf4e0747c702fb57bcd6e74b.js"
+              style={{ display: "inline-block", width: "100%" }}
+            />
+          </div>
+        )}
 
 
 
