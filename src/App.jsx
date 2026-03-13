@@ -186,35 +186,11 @@ const MainApp = ({ darkMode, setDarkMode }) => {
       <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
-          <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <div>
+          <header className="mb-8">
+            <div className="flex flex-col items-center md:items-start">
               <AppLogo />
               <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-2">{t('mainH1Title') || 'Free Online Image Converter – Private & Fast'}</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">{t('description')}</p>
-            </div>
-
-            <div className="flex items-center gap-4">
-              {/* Language Selector */}
-              <select
-                value={i18n.language}
-                onChange={(e) => i18n.changeLanguage(e.target.value)}
-                className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
-              >
-                <option value="en">{t('english')}</option>
-                <option value="es">{t('spanish')}</option>
-                <option value="fr">{t('french')}</option>
-                <option value="de">{t('german')}</option>
-                <option value="zh">{t('chinese')}</option>
-                <option value="ja">{t('japanese')}</option>
-              </select>
-
-              {/* Theme Toggle */}
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded px-4 py-2 flex items-center gap-2"
-              >
-                {darkMode ? t('lightMode') : t('darkMode')}
-              </button>
+              <p className="text-gray-600 dark:text-gray-400 mt-1 text-center md:text-left">{t('description')}</p>
             </div>
           </header>
 
