@@ -8,6 +8,7 @@ const Navigation = ({ darkMode, setDarkMode }) => {
 
   const navItems = [
     { path: '/', label: t('home') },
+    { path: '/blog', label: t('blog') },
     { path: '/formats', label: t('imageFormatsGuide') },
     { path: '/optimization', label: t('optimizationTips') },
     { path: '/advanced', label: t('advancedTechniques') },

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVIF vs WebP: Which Format Should You Use in 2026?</title>
+  <meta name="description" content="AVIF offers better compression than WebP but slower encoding and less browser support. Full AVIF vs WebP comparison — file size, quality, speed, and when to use each.">
+  <meta name="keywords" content="avif vs webp, avif vs webp 2026, avif browser support, webp vs avif comparison, modern image formats">
+  <link rel="canonical" href="https://img-vert.web.app/blog/avif-vs-webp">
+  <meta property="og:title" content="AVIF vs WebP: Which Format Should You Use in 2026?">
+  <meta property="og:description" content="AVIF is smaller but slower and less supported. WebP is the safe modern choice. Full comparison with browser support data.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://img-vert.web.app/blog/avif-vs-webp">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AVIF vs WebP: Which Format Should You Use in 2026?",
+    "description": "Technical comparison of AVIF vs WebP covering file size, browser support, encoding speed, and practical recommendations.",
+    "author": { "@type": "Organization", "name": "img-vert" },
+    "publisher": { "@type": "Organization", "name": "img-vert", "url": "https://img-vert.web.app" },
+    "datePublished": "2026-03-01",
+    "dateModified": "2026-03-01"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Is AVIF better than WebP?", "acceptedAnswer": { "@type": "Answer", "text": "AVIF produces smaller files than WebP at equivalent quality, often 20–50% smaller. However, WebP has broader browser support, significantly faster encoding times, and is simpler to implement. For most projects in 2026, WebP remains the practical choice." } },
+      { "@type": "Question", "name": "What browsers support AVIF?", "acceptedAnswer": { "@type": "Answer", "text": "As of 2026, AVIF is supported by Chrome, Firefox, Safari 16+, and Edge — covering approximately 91–93% of browsers. Older Safari versions (pre-16) and some mobile browsers do not support AVIF." } },
+      { "@type": "Question", "name": "Should I use WebP or AVIF for my website?", "acceptedAnswer": { "@type": "Answer", "text": "Use WebP for simplicity and maximum compatibility. Use AVIF with a WebP fallback if you need the smallest possible file sizes and your audience is on modern browsers. The HTML picture element makes serving both formats easy." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<article>
+
+  <header>
+    <h1>AVIF vs WebP: Which Format Should You Use in 2026?</h1>
+    <p><strong>Primary keyword:</strong> avif vs webp &nbsp;|&nbsp; <strong>Reading time:</strong> 7 min &nbsp;|&nbsp; <strong>Audience:</strong> Web developers, SEO professionals</p>
+  </header>
+
+  <nav>
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#quick-answer">Quick answer</a></li>
+      <li><a href="#what-is-avif">What is AVIF?</a></li>
+      <li><a href="#file-size">File size comparison</a></li>
+      <li><a href="#browser-support">Browser support in 2026</a></li>
+      <li><a href="#encoding-speed">Encoding speed</a></li>
+      <li><a href="#quality">Quality comparison</a></li>
+      <li><a href="#when-to-use">When to use AVIF vs WebP</a></li>
+      <li><a href="#serving-both">How to serve both formats</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </nav>
+
+  <section id="quick-answer">
+    <h2>Quick answer: AVIF vs WebP</h2>
+    <ul>
+      <li><strong>Use WebP</strong> if you want broad compatibility and simple implementation — it's the safe, practical modern choice for 2026.</li>
+      <li><strong>Use AVIF with a WebP fallback</strong> if you're optimising aggressively and can implement the <code>&lt;picture&gt;</code> element for fallbacks.</li>
+      <li><strong>Don't use JPG or PNG for new web projects</strong> — both WebP and AVIF are meaningfully better for web use.</li>
+    </ul>
+  </section>
+
+  <section id="what-is-avif">
+    <h2>What is AVIF?</h2>
+    <p>AVIF (AV1 Image File Format) is a modern image format based on the AV1 video codec, developed by the Alliance for Open Media — a consortium including Google, Mozilla, Apple, Netflix, and Amazon.</p>
+    <p>Like WebP, AVIF supports both lossy and lossless compression, transparency, and animation. Its key advantage over WebP is better compression efficiency — it can achieve smaller files at the same visual quality. Its key disadvantages are slower encoding times and less complete browser support.</p>
+    <p>AVIF is to WebP what WebP was to JPEG: a generational improvement in compression efficiency, with the trade-offs of a newer format (adoption lag, tooling immaturity).</p>
+  </section>
+
+  <section id="file-size">
+    <h2>File size comparison: AVIF vs WebP vs JPEG vs PNG</h2>
+    <p>File size reductions are highly dependent on image content. These ranges represent typical real-world results:</p>
+    <table>
+      <thead>
+        <tr><th>Format</th><th>vs JPEG (photos)</th><th>vs PNG (graphics)</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>AVIF</strong></td><td>40–55% smaller</td><td>30–50% smaller</td><td>Best compression; varies by content</td></tr>
+        <tr><td><strong>WebP</strong></td><td>25–34% smaller</td><td>~26% smaller</td><td>Consistent, predictable gains</td></tr>
+        <tr><td><strong>JPEG</strong></td><td>Baseline</td><td>Much larger</td><td>Poor for graphics</td></tr>
+        <tr><td><strong>PNG</strong></td><td>Much larger</td><td>Baseline</td><td>Lossless; poor for photos</td></tr>
+      </tbody>
+    </table>
+    <p>AVIF's compression advantage is real and significant — particularly for photographs with large uniform colour areas and smooth gradients. For complex photographic content, the gains are smaller. The advantage also narrows as quality settings increase.</p>
+  </section>
+
+  <section id="browser-support">
+    <h2>Browser support in 2026</h2>
+    <table>
+      <thead>
+        <tr><th>Browser</th><th>WebP support</th><th>AVIF support</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Chrome 85+</td><td>✅ Full</td><td>✅ Full</td></tr>
+        <tr><td>Firefox 93+</td><td>✅ Full</td><td>✅ Full</td></tr>
+        <tr><td>Safari 14+</td><td>✅ Full</td><td>✅ (Safari 16+)</td></tr>
+        <tr><td>Safari 14–15</td><td>✅ Full</td><td>❌ No</td></tr>
+        <tr><td>Edge 18+</td><td>✅ Full</td><td>✅ Full</td></tr>
+        <tr><td>Samsung Internet</td><td>✅ Full</td><td>✅ (v18+)</td></tr>
+        <tr><td>IE 11</td><td>❌ No</td><td>❌ No</td></tr>
+        <tr><td><strong>Global coverage</strong></td><td><strong>~96%</strong></td><td><strong>~91–93%</strong></td></tr>
+      </tbody>
+    </table>
+    <p>WebP's 3–5% advantage in browser coverage translates to millions of users. More importantly, AVIF's unsupported browsers include older Safari versions still in active use among Apple users — a significant demographic for many sites.</p>
+  </section>
+
+  <section id="encoding-speed">
+    <h2>Encoding speed</h2>
+    <p>This is AVIF's biggest practical weakness. AVIF encoding is significantly slower than WebP — often 5–20x slower depending on compression level and image size.</p>
+    <ul>
+      <li>A 2MB JPEG converts to WebP in under a second on most hardware</li>
+      <li>The same image to AVIF can take 5–30 seconds at high quality settings</li>
+    </ul>
+    <p>For individual images this barely matters. For batch processing hundreds of product images or server-side on-the-fly conversion, the difference is significant. Many CDN and image optimisation services charge more for AVIF conversion or don't support it yet.</p>
+  </section>
+
+  <section id="quality">
+    <h2>Quality comparison</h2>
+    <p>At very low quality settings (high compression), AVIF clearly wins — WebP develops blocky artefacts while AVIF maintains more natural-looking degradation. At medium to high quality settings (where most web images should be), the difference is often imperceptible without side-by-side comparison at 100% zoom.</p>
+    <p>AVIF has a particular strength with smooth gradients, skies, skin tones, and areas of uniform colour. WebP is more consistent across different content types.</p>
+  </section>
+
+  <section id="when-to-use">
+    <h2>When to use AVIF vs WebP</h2>
+
+    <h3>Use WebP when:</h3>
+    <ul>
+      <li>You want simple implementation with no fallback complexity</li>
+      <li>Your audience includes older Safari users (pre-Safari 16)</li>
+      <li>You're batch-processing many images and encoding speed matters</li>
+      <li>Your CDN or image service has great WebP support but limited AVIF support</li>
+      <li>You want the safest, most universally compatible modern format</li>
+    </ul>
+
+    <h3>Use AVIF (with WebP fallback) when:</h3>
+    <ul>
+      <li>File size minimisation is a top priority (high-traffic sites, mobile-first)</li>
+      <li>You have a modern build pipeline that can generate multiple formats</li>
+      <li>Your audience is predominantly on Chrome or modern Safari</li>
+      <li>You're a developer comfortable with the <code>&lt;picture&gt;</code> element</li>
+    </ul>
+  </section>
+
+  <section id="serving-both">
+    <h2>How to serve both AVIF and WebP with a JPG fallback</h2>
+    <p>The HTML <code>&lt;picture&gt;</code> element lets you offer multiple formats — the browser picks the first one it supports:</p>
+    <pre><code>&lt;picture&gt;
+  &lt;source srcset="image.avif" type="image/avif"&gt;
+  &lt;source srcset="image.webp" type="image/webp"&gt;
+  &lt;img src="image.jpg" alt="Description" loading="lazy"&gt;
+&lt;/picture&gt;</code></pre>
+    <p>This approach delivers AVIF to browsers that support it, WebP to the next tier, and JPG as the universal fallback — giving every user the most efficient format their browser can handle.</p>
+    <p>Convert your images to WebP now (and AVIF when your tooling supports it): <a href="https://img-vert.web.app/jpg-to-webp">JPG to WebP →</a> · <a href="https://img-vert.web.app/png-to-webp">PNG to WebP →</a></p>
+  </section>
+
+  <section id="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Is AVIF better than WebP?</h3>
+    <p>AVIF produces smaller files — often 20–50% smaller than WebP at equivalent quality. However, WebP has broader browser support, faster encoding, and simpler tooling. For most projects in 2026, WebP is the practical choice.</p>
+
+    <h3>What browsers support AVIF?</h3>
+    <p>Chrome, Firefox, Safari 16+, and Edge — approximately 91–93% of browsers globally in 2026. Safari 14–15 supports WebP but not AVIF.</p>
+
+    <h3>Should I switch from WebP to AVIF?</h3>
+    <p>Not necessarily. Consider using AVIF with a WebP fallback using the <code>&lt;picture&gt;</code> element. This gives AVIF to supported browsers and WebP to everyone else, without breaking compatibility.</p>
+
+    <h3>Does Google PageSpeed Insights recommend AVIF?</h3>
+    <p>Google's PageSpeed Insights and Lighthouse flag "Serve images in next-gen formats" — they recommend both WebP and AVIF. Either satisfies the recommendation.</p>
+
+    <h3>Can I convert to WebP for free without uploading files?</h3>
+    <p>Yes — <a href="https://img-vert.web.app/jpg-to-webp">img-vert.web.app</a> converts to WebP entirely in your browser. Your files never leave your device.</p>
+  </section>
+
+  <footer>
+    <p><strong>Related tools:</strong> <a href="https://img-vert.web.app/jpg-to-webp">JPG to WebP</a> · <a href="https://img-vert.web.app/png-to-webp">PNG to WebP</a> · <a href="https://img-vert.web.app/webp-to-jpg">WebP to JPG</a></p>
+    <p><strong>Related articles:</strong> <a href="/blog/what-is-webp-format">What is WebP?</a> · <a href="/blog/reduce-image-size-for-website">Reduce image size for website</a> · <a href="/blog/image-formats-explained">All image formats explained</a></p>
+  </footer>
+
+</article>
+</body>
+</html>

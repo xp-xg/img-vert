@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convert Images Without Uploading: The Private, Browser-Based Way</title>
+  <meta name="description" content="Most image converters upload your files to unknown servers. img-vert converts images entirely in your browser — your files never leave your device. Free, instant, private.">
+  <meta name="keywords" content="convert images without uploading, private image converter, image converter no upload, browser based image converter, client side image converter, convert images locally">
+  <link rel="canonical" href="https://img-vert.web.app/blog/convert-images-without-uploading">
+  <meta property="og:title" content="Convert Images Without Uploading: The Private, Browser-Based Way">
+  <meta property="og:description" content="Your files never leave your device. img-vert converts images entirely in your browser — no server, no upload, 100% private.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://img-vert.web.app/blog/convert-images-without-uploading">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Convert Images Without Uploading: The Private, Browser-Based Way",
+    "description": "How client-side image conversion works and why it's safer and faster than upload-based tools.",
+    "author": { "@type": "Organization", "name": "img-vert" },
+    "publisher": { "@type": "Organization", "name": "img-vert", "url": "https://img-vert.web.app" },
+    "datePublished": "2026-03-01",
+    "dateModified": "2026-03-01"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Is there an image converter that doesn't upload files?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. img-vert.web.app converts images entirely in your browser using JavaScript — your files are never transmitted to any server. It's free, supports all major formats (JPG, PNG, WebP, GIF, BMP, TIFF, HEIC), and works on all devices." } },
+      { "@type": "Question", "name": "How does browser-based image conversion work?", "acceptedAnswer": { "@type": "Answer", "text": "Browser-based conversion uses the JavaScript Canvas API and WebAssembly to process image files directly on your device. The browser reads your file, performs the format conversion, and lets you download the result — without any data leaving your computer." } },
+      { "@type": "Question", "name": "Is it safe to use online image converters?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on the tool. Most online converters require you to upload your files to their servers, where they may be stored, accessed, or used in ways you can't verify. img-vert is different — conversion happens locally in your browser, so your files never leave your device." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<article>
+
+  <header>
+    <h1>Convert Images Without Uploading: The Private, Browser-Based Way</h1>
+    <p><strong>Primary keywords:</strong> convert images without uploading, private image converter &nbsp;|&nbsp; <strong>Reading time:</strong> 5 min</p>
+  </header>
+
+  <nav>
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#the-problem">The problem with most online image converters</a></li>
+      <li><a href="#how-it-works">How browser-based conversion works</a></li>
+      <li><a href="#why-matters">Why privacy matters for image conversion</a></li>
+      <li><a href="#use-img-vert">Convert images privately — free</a></li>
+      <li><a href="#supported-formats">Supported formats</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </nav>
+
+  <section id="the-problem">
+    <h2>The problem with most online image converters</h2>
+    <p>Search for "free image converter" and you'll find dozens of tools. Most of them work the same way: you click upload, your file travels across the internet to a server in an unknown location, the server converts it, you download the result, and somewhere in that process — your photo, your screenshot, your document scan — has been processed on a stranger's computer.</p>
+    <p>What happens to uploaded files after conversion? The privacy policies of most free converter tools are vague at best. Files may be:</p>
+    <ul>
+      <li>Stored on the server for hours, days, or indefinitely</li>
+      <li>Accessible to the company's staff or contractors</li>
+      <li>Used to train AI models or analysed for other commercial purposes</li>
+      <li>Exposed in a data breach if the service has poor security</li>
+    </ul>
+    <p>For most images, this may not matter. But for personal photos, business documents, medical images, IDs, financial records, or any image containing sensitive information — the upload model is a genuine privacy risk.</p>
+    <p>There's a better way.</p>
+  </section>
+
+  <section id="how-it-works">
+    <h2>How browser-based image conversion works</h2>
+    <p>Modern browsers are extraordinarily capable. The same JavaScript and WebAssembly technology that powers complex web applications can also perform image format conversion entirely within the browser — no server required.</p>
+    <p>Here's what happens when you convert an image on img-vert.web.app:</p>
+    <ol>
+      <li><strong>You select your file</strong> — the browser reads it from your local storage using the File API. The file data stays on your device.</li>
+      <li><strong>The browser processes it</strong> — JavaScript and the Canvas API (or WebAssembly-compiled image libraries) perform the format conversion using your computer's processor.</li>
+      <li><strong>The result is generated locally</strong> — the converted file is created in your browser's memory.</li>
+      <li><strong>You download it</strong> — your browser saves the converted file to your device, the same way any download works.</li>
+    </ol>
+    <p>At no point in this process does any data leave your device. There is no network request containing your image. No server receives or stores anything. The entire operation is local.</p>
+
+    <h3>Is browser-based conversion as good as server-based?</h3>
+    <p>For the formats supported by img-vert (JPG, PNG, WebP, GIF, BMP, TIFF, HEIC), yes — the output quality is equivalent. The conversion algorithms are the same whether they run on your device or a server.</p>
+    <p>Modern devices — even mid-range phones — have more than enough processing power for image format conversion. Conversion is typically complete in under a second for standard photos.</p>
+  </section>
+
+  <section id="why-matters">
+    <h2>Why privacy matters for image conversion — real scenarios</h2>
+
+    <h3>Personal photos</h3>
+    <p>HEIC photos from your iPhone contain metadata including the date, time, and GPS location where the photo was taken. When you upload a HEIC photo to convert it, you're potentially sending that location data — along with the image itself — to an unknown server.</p>
+
+    <h3>Business documents</h3>
+    <p>Scanned invoices, contracts, employee records, and financial statements are frequently saved as images. Uploading these to a free converter means transmitting sensitive business data off your network.</p>
+
+    <h3>Medical images</h3>
+    <p>X-rays, MRI scans, and other medical images are protected by privacy laws in most jurisdictions. Using an upload-based converter with medical images may violate compliance requirements.</p>
+
+    <h3>ID documents</h3>
+    <p>Passport photos, driving licence scans, and identity documents should never be uploaded to a service whose data practices you can't verify.</p>
+  </section>
+
+  <section id="use-img-vert">
+    <h2>Convert images privately — free, instant, no upload</h2>
+    <p><a href="https://img-vert.web.app">img-vert.web.app</a> is built on a simple principle: <strong>your files should never leave your device</strong> unless you choose to share them.</p>
+    <p>Every conversion on img-vert — whether it's a JPG to WebP, a HEIC to JPG, or a BMP to PNG — happens entirely in your browser. Nothing is ever transmitted to any server.</p>
+
+    <h3>What you get:</h3>
+    <ul>
+      <li>✅ Complete privacy — no uploads, no server processing, no data retention</li>
+      <li>✅ All major formats supported: JPG, PNG, WebP, GIF, BMP, TIFF, HEIC</li>
+      <li>✅ Batch conversion — convert multiple files at once</li>
+      <li>✅ Works on all devices — Windows, Mac, Linux, iOS, Android</li>
+      <li>✅ No account required, no sign-up, no watermarks</li>
+      <li>✅ Completely free</li>
+    </ul>
+
+    <p>→ <a href="https://img-vert.web.app"><strong>Start converting privately →</strong></a></p>
+  </section>
+
+  <section id="supported-formats">
+    <h2>Supported conversions</h2>
+    <p>img-vert supports conversion between all major image formats, all processed locally in your browser:</p>
+    <table>
+      <thead>
+        <tr><th>From</th><th>To</th><th>Common use case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>JPG</td><td>WebP</td><td><a href="https://img-vert.web.app/jpg-to-webp">Reduce web image file sizes</a></td></tr>
+        <tr><td>PNG</td><td>WebP</td><td><a href="https://img-vert.web.app/png-to-webp">Web optimisation with transparency</a></td></tr>
+        <tr><td>HEIC</td><td>JPG</td><td><a href="https://img-vert.web.app/heic-to-jpg">iPhone photos on Windows</a></td></tr>
+        <tr><td>WebP</td><td>JPG</td><td><a href="https://img-vert.web.app/webp-to-jpg">Compatibility with older software</a></td></tr>
+        <tr><td>PNG</td><td>JPG</td><td><a href="https://img-vert.web.app/png-to-jpg">Reduce file size for photos</a></td></tr>
+        <tr><td>TIFF</td><td>JPG</td><td><a href="https://img-vert.web.app/tiff-to-jpg">Web version of print images</a></td></tr>
+        <tr><td>BMP</td><td>JPG/PNG/WebP</td><td><a href="https://img-vert.web.app/bmp-to-jpg">Convert legacy Windows images</a></td></tr>
+        <tr><td>GIF</td><td>WebP</td><td><a href="https://img-vert.web.app/gif-to-webp">Smaller animations for web</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Is there an image converter that doesn't upload files?</h3>
+    <p>Yes — img-vert.web.app. All conversions happen locally in your browser using JavaScript. Your files are never transmitted to any server.</p>
+
+    <h3>How does browser-based image conversion work?</h3>
+    <p>Your browser uses the JavaScript Canvas API and WebAssembly to process image files directly on your device. The conversion reads your file, processes it locally, and generates the output — all without any network requests containing your image data.</p>
+
+    <h3>Is img-vert really free?</h3>
+    <p>Yes, completely free. No account, no sign-up, no watermarks, no file size limits for standard formats.</p>
+
+    <h3>Does it work offline?</h3>
+    <p>Once the page is loaded, conversions work without an active internet connection. The page needs to load initially, but once loaded, the JavaScript runs entirely locally and does not require network access to perform conversions.</p>
+
+    <h3>What is the maximum file size supported?</h3>
+    <p>File size limits depend on your device's available memory rather than any server limit (because there's no server). Most modern devices handle files up to several hundred MB without issues.</p>
+
+    <h3>Does converting images in the browser affect quality?</h3>
+    <p>No. Browser-based conversion uses the same algorithms as server-based tools. The output quality is identical.</p>
+  </section>
+
+  <footer>
+    <p><strong>Popular conversions:</strong> <a href="https://img-vert.web.app/jpg-to-webp">JPG to WebP</a> · <a href="https://img-vert.web.app/heic-to-jpg">HEIC to JPG</a> · <a href="https://img-vert.web.app/png-to-webp">PNG to WebP</a> · <a href="https://img-vert.web.app/webp-to-jpg">WebP to JPG</a> · <a href="https://img-vert.web.app/png-to-jpg">PNG to JPG</a></p>
+    <p><strong>Related articles:</strong> <a href="/blog/what-is-webp-format">What is WebP?</a> · <a href="/blog/heic-files-on-windows">HEIC files on Windows</a> · <a href="/blog/image-formats-explained">All image formats explained</a></p>
+  </footer>
+
+</article>
+</body>
+</html>
