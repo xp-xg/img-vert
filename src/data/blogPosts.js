@@ -10,7 +10,8 @@ export const blogPosts = {
     dateModified: '2026-03-13',
     readTime: '6 min',
     image: '/blog/images/webp_format_hero_1773407432694.png',
-    imageAlt: 'High-tech digital illustration representing WebP image format compression',
+    imageAlt: 'High-tech digital illustration showcasing WebP format optimization and data efficiency',
+    imageTitle: 'WebP Image Format Optimization Guide',
     category: 'Formats',
     author: 'img-vert Team',
     faqs: [
@@ -43,11 +44,12 @@ export const blogPosts = {
         <figure className="my-8">
           <img 
             src="/blog/images/webp_format_hero_1773407432694.png" 
-            alt="WebP compression illustration showing data blocks shrinking"
+            alt="Comparison of WebP vs JPEG compression illustrating 25-34% file size reduction"
+            title="WebP Compression Benefits"
             className="w-full rounded-xl shadow-md border border-gray-100"
             loading="lazy"
           />
-          <figcaption className="text-center text-sm text-gray-500 mt-3 italic">WebP uses advanced predictive coding to shrink file sizes significantly.</figcaption>
+          <figcaption className="text-center text-sm text-gray-500 mt-3 italic">WebP uses advanced predictive coding to shrink file sizes significantly while maintaining visual quality.</figcaption>
         </figure>
 
         <ul>
@@ -141,7 +143,8 @@ export const blogPosts = {
     dateModified: '2026-03-13',
     readTime: '5 min',
     image: '/blog/images/heic_windows_hero_1773407449460.png',
-    imageAlt: 'Illustration of an iPhone connecting to a Windows PC for photo transfer',
+    imageAlt: 'Diagram showing how to connect an iPhone to a Windows PC to transfer and convert HEIC photos',
+    imageTitle: 'Opening HEIC Files on Windows Tutorial',
     category: 'How-To',
     author: 'img-vert Team',
     faqs: [
@@ -233,7 +236,8 @@ export const blogPosts = {
     dateModified: '2026-03-13',
     readTime: '7 min',
     image: '/blog/images/png_vs_jpg_hero_1773407558971.png',
-    imageAlt: 'Split screen showing a PNG graphic vs a JPG photograph',
+    imageAlt: 'Side-by-side comparison of PNG vs JPG formats, highlighting transparency and file size differences',
+    imageTitle: 'PNG vs JPG Format Comparison',
     category: 'Comparison',
     author: 'img-vert Team',
     faqs: [
@@ -339,7 +343,8 @@ export const blogPosts = {
     dateModified: '2026-03-13',
     readTime: '7 min',
     image: '/blog/images/reduce_size_hero_1773407903580.png',
-    imageAlt: 'Glowing stopwatch next to a shrinking image file, representing website speed and compression',
+    imageAlt: 'Visual metaphor for website speed: a stopwatch next to a shrinking image file and a cloud icon',
+    imageTitle: 'How to Reduce Image File Size for Web',
     category: 'Optimization',
     author: 'img-vert Team',
     faqs: [
@@ -436,7 +441,8 @@ export const blogPosts = {
     dateModified: '2026-03-13',
     readTime: '10 min',
     image: '/blog/images/formats_explained_hero_1773407920275.png',
-    imageAlt: 'Abstract composition of geometric shapes and various image file type icons',
+    imageAlt: 'Comprehensive collection of image file type icons including JPG, PNG, WebP, GIF, and HEIC on a digital background',
+    imageTitle: 'Ultimate Guide to Image Formats 2026',
     category: 'Guide',
     author: 'img-vert Team',
     faqs: [],
@@ -506,7 +512,8 @@ export const blogPosts = {
     dateModified: '2026-03-13',
     readTime: '6 min',
     image: '/blog/images/instagram_format_hero_1773407942534.png',
-    imageAlt: 'Smartphone screen showing an Instagram photo grid surrounded by abstract social media elements',
+    imageAlt: 'Smartphone with Instagram feed open, demonstrating optimal image quality and layout',
+    imageTitle: 'Best Image Settings for Instagram 2026',
     category: 'Social Media',
     author: 'img-vert Team',
     faqs: [
@@ -601,6 +608,9 @@ export const blogPosts = {
     datePublished: '2026-03-01',
     dateModified: '2026-03-13',
     readTime: '7 min',
+    image: '/blog/images/avif_vs_webp_hero_1773604439101.png',
+    imageAlt: 'Data visualization comparing AVIF and WebP compression layers for modern web performance',
+    imageTitle: 'AVIF vs WebP Compression Comparison',
     category: 'Comparison',
     author: 'img-vert Team',
     faqs: [

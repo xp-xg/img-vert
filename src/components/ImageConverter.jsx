@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { saveAs } from 'file-saver';
+import { Link } from 'react-router-dom';
 import AdComponent from './AdComponent';
 import errorLogger from '../services/errorLogger';
 
@@ -30,6 +31,8 @@ const ImageConverter = ({ initialFormat = 'png', darkMode = false, forcedOutputF
   const [batchFiles, setBatchFiles] = useState([]); // Array of files for batch conversion
   const [batchResults, setBatchResults] = useState([]); // Array of conversion results
   const [isBatchConverting, setIsBatchConverting] = useState(false);
+  const [step, setStep] = useState(1); // 1: Upload, 2: Settings, 3: Processing, 4: Download
+  const [processingProgress, setProcessingProgress] = useState(0);
 
   const fileInputRef = useRef(null);
   const imgRef = useRef(null);
@@ -283,6 +286,7 @@ const ImageConverter = ({ initialFormat = 'png', darkMode = false, forcedOutputF
               setOriginalDimensions({ width: img.width, height: img.height });
               setWidth(img.width.toString());
               setHeight(img.height.toString());
+              setStep(2); // Move to settings step after upload
             } catch (dimensionError) {
               console.error('Error getting image dimensions:', dimensionError);
               errorLogger.logError(dimensionError, { action: 'getOriginalDimensions', fileName: file.name });
@@ -317,6 +321,8 @@ const ImageConverter = ({ initialFormat = 'png', darkMode = false, forcedOutputF
     }
 
     setIsLoading(true);
+    setStep(3);
+    setProcessingProgress(0);
 
     try {
       const canvas = document.createElement('canvas');
@@ -348,16 +354,31 @@ const ImageConverter = ({ initialFormat = 'png', darkMode = false, forcedOutputF
           canvas.toBlob((blob) => {
             if (!blob) throw new Error('Failed to create image blob');
             const url = URL.createObjectURL(blob);
-            // Clean up previous converted URL to prevent memory leak
-            setConvertedUrl((prevUrl) => {
-              if (prevUrl) URL.revokeObjectURL(prevUrl);
-              return url;
-            });
-            // Store converted file size for display
-            setConvertedFileSize(blob.size);
-            setIsLoading(false);
-            toast.success(t('successConverted'));
             
+            // Progress timer for ad engagement
+            let progress = 0;
+            const interval = setInterval(() => {
+              progress += Math.random() * 20;
+              if (progress >= 100) {
+                clearInterval(interval);
+                setProcessingProgress(100);
+                
+                // Allow a small final delay before showing the download button
+                setTimeout(() => {
+                  setConvertedUrl((prevUrl) => {
+                    if (prevUrl) URL.revokeObjectURL(prevUrl);
+                    return url;
+                  });
+                  setConvertedFileSize(blob.size);
+                  setIsLoading(false);
+                  setStep(4);
+                  toast.success(t('successConverted'));
+                }, 800);
+              } else {
+                setProcessingProgress(progress);
+              }
+            }, 600);
+
             // Add to conversion history
             const historyEntry = {
               id: Date.now(),
@@ -418,6 +439,8 @@ const ImageConverter = ({ initialFormat = 'png', darkMode = false, forcedOutputF
     setAspectRatio(true);
     setOriginalDimensions({ width: 0, height: 0 });
     setConvertedFileSize(null);
+    setStep(1);
+    setProcessingProgress(0);
     // Return focus to upload button for keyboard users
     fileInputRef.current?.focus();
   };
@@ -568,9 +591,43 @@ const ImageConverter = ({ initialFormat = 'png', darkMode = false, forcedOutputF
         {isLoading && 'Converting image, please wait...'}
         {convertedUrl && 'Image converted successfully. Ready to download.'}
       </div>
+      
+      {/* Funnel Progress Header */}
+      <div className="mb-10">
+        <div className="flex items-center justify-between mb-2">
+          {[1, 2, 3, 4].map((s) => (
+            <div key={s} className="flex flex-col items-center flex-1">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${
+                step >= s 
+                  ? 'bg-blue-600 text-white' 
+                  : darkMode ? 'bg-gray-700 text-gray-500' : 'bg-gray-200 text-gray-400'
+              } ${step === s ? 'ring-4 ring-blue-200 dark:ring-blue-900/50 scale-110' : ''}`}>
+                {step > s ? '✓' : s}
+              </div>
+              <span className={`text-xs mt-2 font-medium ${
+                step >= s 
+                  ? 'text-blue-600 dark:text-blue-400' 
+                  : 'text-gray-400 dark:text-gray-500'
+              }`}>
+                {s === 1 ? 'Upload' : s === 2 ? 'Settings' : s === 3 ? 'Optimize' : 'Download'}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="relative h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mx-10">
+          <div 
+            className="absolute top-0 left-0 h-full bg-blue-600 transition-all duration-500"
+            style={{ width: `${(step - 1) * 33.33}%` }}
+          />
+        </div>
+      </div>
 
-      {/* Upload Section */}
-      <section className="mb-8" aria-label="Image Upload">
+      <AdComponent adSlot="top-funnel" />
+
+      {/* STEP 1: UPLOAD */}
+      {step === 1 && (
+        <>
+          <section className="mb-8" aria-label="Image Upload">
         <div
           className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors
           ${isDragOver
@@ -617,324 +674,242 @@ const ImageConverter = ({ initialFormat = 'png', darkMode = false, forcedOutputF
           />
         </div>
       </section>
-
-      {/* Preview and Conversion Section */}
-      {previewUrl && (
-        <section className="mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className={`rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-              <h2 className="text-xl font-semibold mb-4">{t('originalImage')}</h2>
-              <div className="flex flex-col items-center">
-                <img ref={imgRef} src={previewUrl} alt="Preview" className="max-h-64 object-contain mb-4" />
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  {t('originalSize', { width: originalDimensions.width, height: originalDimensions.height })}
-                </p>
-                {imageFile && (
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {t('fileSize', { size: formatFileSize(imageFile.size) })}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className={`rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-              <h2 className="text-xl font-semibold mb-4">{t('convertedImagePreview')}</h2>
-              <div className="flex flex-col items-center">
-                {convertedUrl ? (
-                  <img src={convertedUrl} alt="Converted Preview" className="max-h-64 object-contain mb-4" />
-                ) : (
-                  <div className={`w-full h-48 flex items-center justify-center border ${darkMode ? 'border-gray-700' : 'border-gray-300'} rounded-lg`}>
-                    <p className="text-gray-500 dark:text-gray-400">{t('convertedImagePlaceholder')}</p>
-                  </div>
-                )}
-                {convertedUrl && (
-                  <div className="text-center space-y-1">
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      {t('convertedSize', { width: width || originalDimensions.width, height: height || originalDimensions.height })}
-                    </p>
-                    {convertedFileSize && (
-                      <div className="flex items-center justify-center gap-2 text-sm">
-                        <span className="text-gray-600 dark:text-gray-300">
-                          File size: {formatFileSize(convertedFileSize)}
-                        </span>
-                        {imageFile && (
-                          <span className={`font-medium ${convertedFileSize < imageFile.size ? 'text-green-500' : 'text-red-500'}`}>
-                            ({convertedFileSize < imageFile.size ? '-' : '+'}{Math.abs(Math.round((1 - convertedFileSize / imageFile.size) * 100))}%)
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
+      <AdComponent adSlot="bottom-upload" />
+      </>
       )}
 
-      {/* Conversion Options */}
-      {previewUrl && (
-        <section className={`mb-8 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`} aria-label="Conversion Options">
-          <h2 className="text-xl font-semibold mb-4">{t('convertImage')}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-2" id="format-label">{t('outputFormat')}</label>
-              <div className="flex gap-2 flex-wrap" role="radiogroup" aria-labelledby="format-label">
-                {['png', 'jpeg', 'webp', 'gif', 'bmp'].map((fmt) => (
-                  <button
-                    key={fmt}
-                    disabled={!!forcedOutputFormat}
-                    onClick={() => setFormat(fmt)}
-                    role="radio"
-                    aria-checked={format === fmt}
-                    aria-disabled={!!forcedOutputFormat}
-                    className={`px-4 py-2 rounded-lg transition-colors ${format === fmt
-                        ? 'bg-blue-500 text-white ring-2 ring-blue-300 dark:ring-blue-500'
-                        : darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
-                      } ${!!forcedOutputFormat && format !== fmt ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    {fmt.toUpperCase()}
-                  </button>
-                ))}
+      {/* STEP 2: SETTINGS */}
+      {step === 2 && (
+        <>
+          <AdComponent adSlot="settings-top" />
+          <section className="mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Image Preview & Properties */}
+              <div className={`rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
+                <h2 className="text-xl font-semibold mb-4">{t('originalImage')}</h2>
+                <div className="flex flex-col items-center">
+                  <div className="relative group mb-4">
+                    <img src={previewUrl} alt="Preview" className="max-h-64 rounded-lg object-contain shadow-sm" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg">
+                      <span className="text-white text-sm font-medium">Original Backdrop</span>
+                    </div>
+                  </div>
+                  
+                  {/* Image Properties Table */}
+                  <div className={`w-full mt-4 rounded-lg border ${darkMode ? 'border-gray-700 bg-gray-900/50' : 'border-gray-100 bg-gray-50'} overflow-hidden`}>
+                    <div className="grid grid-cols-2 gap-px bg-gray-200 dark:bg-gray-700">
+                      {[
+                        { label: 'File Name', value: imageFile?.name || 'Unknown' },
+                        { label: 'Format', value: imageFile?.type?.split('/')[1]?.toUpperCase() || 'Unknown' },
+                        { label: 'File Size', value: formatFileSize(imageFile?.size || 0) },
+                        { label: 'Original Resolution', value: `${originalDimensions.width} x ${originalDimensions.height}` }
+                      ].map((prop, idx) => (
+                        <React.Fragment key={idx}>
+                          <div className={`p-3 text-xs font-bold uppercase tracking-wider ${darkMode ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
+                            {prop.label}
+                          </div>
+                          <div className={`p-3 text-sm truncate ${darkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-700'}`}>
+                            {prop.value}
+                          </div>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Conversion Settings */}
+              <div className={`rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
+                <h2 className="text-xl font-semibold mb-4">{t('convertImage')}</h2>
+                <div className="space-y-6">
+                  {/* Output Format */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">{t('outputFormat')}</label>
+                    <div className="flex gap-2 flex-wrap">
+                      {['png', 'jpeg', 'webp', 'gif', 'bmp'].map((fmt) => (
+                        <button
+                          key={fmt}
+                          onClick={() => setFormat(fmt)}
+                          className={`px-4 py-2 rounded-lg transition-all font-bold text-sm ${
+                            format === fmt 
+                              ? 'bg-blue-600 text-white shadow-md scale-105' 
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          }`}
+                        >
+                          {fmt.toUpperCase()}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Dimensions */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                       <label className="text-sm font-medium">Dimensions</label>
+                       <button 
+                        onClick={() => {
+                          setWidth(originalDimensions.width.toString());
+                          setHeight(originalDimensions.height.toString());
+                        }}
+                        className="text-xs text-blue-500 hover:underline"
+                       >
+                         Reset to original
+                       </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase text-gray-400 font-bold">Width (px)</span>
+                        <input
+                          type="number"
+                          value={width}
+                          onChange={handleWidthChange}
+                          className={`w-full p-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase text-gray-400 font-bold">Height (px)</span>
+                        <input
+                          type="number"
+                          value={height}
+                          onChange={handleHeightChange}
+                          className={`w-full p-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}
+                        />
+                      </div>
+                    </div>
+                    <label className="flex items-center gap-2 mt-3 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={aspectRatio}
+                        onChange={(e) => setAspectRatio(e.target.checked)}
+                        className="w-4 h-4 text-blue-600 rounded"
+                      />
+                      <span className="text-sm text-gray-500 group-hover:text-blue-500 transition-colors">Lock Aspect Ratio</span>
+                    </label>
+                  </div>
+
+                  {/* Quality Selector */}
+                  {(format === 'jpeg' || format === 'webp') && (
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Conversion Quality</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {['high', 'medium', 'low'].map((q) => (
+                          <button
+                            key={q}
+                            onClick={() => setQuality(q)}
+                            className={`p-2 rounded-lg text-xs font-bold capitalize transition-all ${
+                              quality === q
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-500'
+                            }`}
+                          >
+                            {q}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Actions */}
+                  <div className="flex flex-wrap gap-4 pt-4">
+                    <button
+                      onClick={handleConvert}
+                      className="flex-1 min-w-[150px] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl active:scale-95"
+                      type="button"
+                    >
+                      {t('convert')} Now
+                    </button>
+                    <button 
+                      onClick={handleReset} 
+                      className={`py-4 px-8 rounded-xl font-medium transition-colors ${
+                        darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
+                      }`}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-2" id="quality-label">Quality</label>
-              <div className="flex gap-2" role="radiogroup" aria-labelledby="quality-label">
-                {[
-                  { value: 'high', label: 'High', desc: 'Best quality, larger file' },
-                  { value: 'medium', label: 'Medium', desc: 'Balanced quality and size' },
-                  { value: 'low', label: 'Low', desc: 'Smallest file, lower quality' }
-                ].map((q) => (
-                  <button
-                    key={q.value}
-                    onClick={() => setQuality(q.value)}
-                    disabled={format === 'png' || format === 'gif' || format === 'bmp'}
-                    role="radio"
-                    aria-checked={quality === q.value}
-                    aria-disabled={format === 'png' || format === 'gif' || format === 'bmp'}
-                    title={q.desc}
-                    className={`px-3 py-2 rounded-lg transition-colors text-sm ${quality === q.value
-                        ? 'bg-blue-500 text-white ring-2 ring-blue-300 dark:ring-blue-500'
-                        : darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
-                      } ${(format === 'png' || format === 'gif' || format === 'bmp') ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    {q.label}
-                  </button>
-                ))}
-              </div>
-              {(format === 'png' || format === 'gif' || format === 'bmp') && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1" role="note">
-                  N/A for {format.toUpperCase()} (lossless)
-                </p>
+          </section>
+          <AdComponent adSlot="settings-bottom" />
+        </>
+      )}
+
+      {/* STEP 3: PROCESSING */}
+      {step === 3 && (
+        <div className="flex flex-col items-center py-12 px-6 rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-blue-50 dark:border-gray-700 text-center">
+          <AdComponent adSlot="processing-top" />
+          <div className="my-8 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-2">Analyzing & Optimizing...</h2>
+            <div className="relative h-4 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden border dark:border-gray-600 mt-6">
+              <div 
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-300"
+                style={{ width: `${processingProgress}%` }}
+              />
+            </div>
+            <p className="mt-4 font-medium text-blue-600">{Math.round(processingProgress)}% Complete</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-8">
+            <AdComponent adSlot="processing-left" />
+            <AdComponent adSlot="processing-right" />
+          </div>
+        </div>
+      )}
+
+      {/* STEP 4: DOWNLOAD */}
+      {step === 4 && (
+        <div className="animate-in fade-in zoom-in duration-500">
+          <div className="bg-green-500/10 border border-green-500 text-green-600 dark:text-green-400 py-4 px-6 rounded-xl mb-8 flex items-center gap-3 font-bold">
+            ✓ Conversion Complete!
+          </div>
+
+          <section className="mb-8">
+            <div className={`rounded-xl p-8 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg text-center`}>
+              {convertedUrl && (
+                <div className="flex flex-col items-center">
+                  <img src={convertedUrl} alt="Converted" className="max-h-80 object-contain mb-6 rounded-lg" />
+                  <div className="flex flex-wrap items-center justify-center gap-4">
+                    <button
+                      onClick={handleDownload}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-xl flex items-center gap-2 text-lg"
+                      type="button"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      {t('downloadImage')}
+                    </button>
+                    <button onClick={handleReset} className="bg-gray-200 dark:bg-gray-700 py-4 px-8 rounded-xl font-bold">Convert More</button>
+                  </div>
+                </div>
               )}
             </div>
-          </div>
+          </section>
 
-          {/* Resize Section */}
-          <div className="border-t pt-6 mt-6">
-            <div className="flex items-center gap-2 mb-4">
-              <input
-                type="checkbox"
-                id="aspectRatio"
-                checked={aspectRatio}
-                onChange={(e) => setAspectRatio(e.target.checked)}
-                className="rounded"
-                aria-describedby="aspectRatioDesc"
-              />
-              <label htmlFor="aspectRatio" className="text-sm font-medium">{t('maintainAspectRatio')}</label>
-              <span id="aspectRatioDesc" className="sr-only">When checked, changing width will automatically adjust height proportionally</span>
-            </div>
-            <div className="grid grid-cols-2 gap-4" role="group" aria-label="Image dimensions">
-              <div>
-                <label htmlFor="width-input" className="block text-sm mb-1">{t('width')}</label>
-                <input 
-                  id="width-input"
-                  type="number" 
-                  value={width} 
-                  onChange={handleWidthChange} 
-                  className="w-full p-2 border rounded-lg bg-white dark:bg-gray-700" 
-                  min="1"
-                  max="16384"
-                  aria-describedby="widthDesc"
-                />
-                <span id="widthDesc" className="sr-only">Enter width in pixels, maximum 16384</span>
-              </div>
-              <div>
-                <label htmlFor="height-input" className="block text-sm mb-1">{t('height')}</label>
-                <input 
-                  id="height-input"
-                  type="number" 
-                  value={height} 
-                  onChange={handleHeightChange} 
-                  className="w-full p-2 border rounded-lg bg-white dark:bg-gray-700" 
-                  min="1"
-                  max="16384"
-                  aria-describedby="heightDesc"
-                />
-                <span id="heightDesc" className="sr-only">Enter height in pixels, maximum 16384</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-4 mt-6" role="group" aria-label="Conversion actions">
-            <button
-              onClick={handleConvert}
-              disabled={isLoading}
-              className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg transition-colors flex items-center disabled:opacity-50"
-              aria-busy={isLoading}
-              type="button"
-            >
-              {isLoading ? (
-                <><svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>{t('convert')}...</>
-              ) : t('convert')}
-            </button>
-            <button
-              onClick={handleDownload}
-              disabled={!convertedUrl}
-              className={`font-medium py-2 px-6 rounded-lg transition-colors flex items-center ${convertedUrl ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'}`}
-              type="button"
-              aria-describedby={!convertedUrl ? 'downloadDesc' : undefined}
-            >
-              {t('downloadImage')}
-            </button>
-            {!convertedUrl && <span id="downloadDesc" className="sr-only">Convert an image first to enable download</span>}
-            <button 
-              onClick={handleReset} 
-              className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-              type="button"
-            >
-              {t('reset')}
-            </button>
-          </div>
-        </section>
-      )}
-
-      {/* Batch Conversion Section */}
-      {batchFiles.length > 0 && (
-        <section className={`mb-8 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`} aria-label="Batch Conversion">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Batch Conversion ({batchFiles.length} file{batchFiles.length !== 1 ? 's' : ''})</h2>
-            <button
-              onClick={handleClearBatch}
-              className="text-sm text-gray-500 hover:text-red-500 transition-colors"
-              type="button"
-              disabled={isBatchConverting}
-            >
-              Clear All
-            </button>
-          </div>
+          <AdComponent adSlot="download-success" />
           
-          {/* Batch file list */}
-          <div className={`mb-4 p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-            <p className="text-sm font-medium mb-2">Files to convert:</p>
-            <ul className="text-sm space-y-1 max-h-32 overflow-y-auto">
-              {batchFiles.map((file, idx) => (
-                <li key={idx} className="flex items-center justify-between">
-                  <span className="truncate">{file.name}</span>
-                  <span className="text-gray-500 dark:text-gray-400 ml-2">{formatFileSize(file.size)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Batch action buttons */}
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={handleBatchConvert}
-              disabled={isBatchConverting || batchFiles.length === 0}
-              className="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              type="button"
-            >
-              {isBatchConverting ? 'Converting...' : `Convert All (${batchFiles.length})`}
-            </button>
-            {batchResults.length > 0 && (
-              <button
-                onClick={handleDownloadAll}
-                disabled={!batchResults.some(r => r.success)}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-colors disabled:opacity-50"
-                type="button"
-              >
-                Download All
-              </button>
-            )}
-          </div>
-
-          {/* Batch results */}
-          {batchResults.length > 0 && (
-            <div className="mt-4">
-              <h3 className="font-semibold mb-2">Results:</h3>
-              <div className="max-h-48 overflow-y-auto space-y-1">
-                {batchResults.map((result, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-center justify-between p-2 rounded ${result.success ? (darkMode ? 'bg-green-900/30' : 'bg-green-100') : (darkMode ? 'bg-red-900/30' : 'bg-red-100')}`}
-                  >
-                    <span className="text-sm truncate flex-1">{result.fileName}</span>
-                    <span className={`text-sm ml-2 ${result.success ? 'text-green-500' : 'text-red-500'}`}>
-                      {result.success ? '✓ Success' : `✗ Failed: ${result.error}`}
-                    </span>
-                  </div>
-                ))}
-              </div>
+          <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
+            <h3 className="text-2xl font-bold mb-4 text-center">Need more?</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Link to="/png-to-webp" className="bg-white/10 hover:bg-white/20 p-4 rounded-xl text-center font-bold">PNG to WebP</Link>
+              <Link to="/jpg-to-png" className="bg-white/10 hover:bg-white/20 p-4 rounded-xl text-center font-bold">JPG to PNG</Link>
             </div>
-          )}
-        </section>
+          </div>
+          <AdComponent adSlot="download-bottom" />
+        </div>
       )}
 
-      {/* Conversion History */}
-      {conversionHistory.length > 0 && (
-        <section className={`mb-8 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`} aria-label="Conversion History">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Recent Conversions</h2>
-            <button
-              onClick={() => setConversionHistory([])}
-              className="text-sm text-gray-500 hover:text-red-500 transition-colors"
-              type="button"
-              aria-label="Clear conversion history"
-            >
-              Clear History
-            </button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className={`border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-                  <th className="text-left py-2 px-3">Time</th>
-                  <th className="text-left py-2 px-3">Conversion</th>
-                  <th className="text-left py-2 px-3">Dimensions</th>
-                  <th className="text-left py-2 px-3">Size Change</th>
-                </tr>
-              </thead>
-              <tbody>
-                {conversionHistory.map((item) => (
-                  <tr 
-                    key={item.id} 
-                    className={`border-b ${darkMode ? 'border-gray-700' : 'border-gray-100'} hover:${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}
-                  >
-                    <td className="py-2 px-3 text-gray-500 dark:text-gray-400">
-                      {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </td>
-                    <td className="py-2 px-3 font-medium">
-                      {item.fromFormat?.toUpperCase()} → {item.toFormat.toUpperCase()}
-                    </td>
-                    <td className="py-2 px-3 text-gray-600 dark:text-gray-300">
-                      {item.dimensions.width} × {item.dimensions.height}px
-                    </td>
-                    <td className="py-2 px-3">
-                      <span className={item.convertedSize < item.originalSize ? 'text-green-500' : 'text-red-500'}>
-                        {item.convertedSize < item.originalSize ? '-' : '+'}
-                        {Math.abs(Math.round((1 - item.convertedSize / item.originalSize) * 100))}%
-                      </span>
-                      <span className="text-gray-500 dark:text-gray-400 ml-2">
-                        ({formatFileSize(item.convertedSize)})
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* History */}
+      {(step === 1 || step === 4) && conversionHistory.length > 0 && (
+        <section className={`mt-12 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
+          <h2 className="text-xl font-semibold mb-4">Recent Conversions</h2>
+          <div className="space-y-2">
+            {conversionHistory.map((item) => (
+              <div key={item.id} className="flex justify-between items-center p-3 rounded-lg border dark:border-gray-700">
+                <span className="font-medium text-sm">{item.fromFormat.toUpperCase()} → {item.toFormat.toUpperCase()}</span>
+                <span className="text-green-500 text-xs">{formatFileSize(item.convertedSize)}</span>
+              </div>
+            ))}
           </div>
         </section>
       )}

@@ -280,6 +280,7 @@ const BlogPostPage = ({ darkMode }) => {
               <img 
                 src={post.image} 
                 alt={post.imageAlt || post.title}
+                title={post.imageTitle || post.title}
                 className="w-full h-auto object-cover aspect-video"
                 loading="eager"
               />
