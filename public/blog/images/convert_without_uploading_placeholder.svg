@@ -1,0 +1,9 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#7C3AED"/>
+  <rect x="350" y="180" width="500" height="270" rx="30" fill="#8B5CF6"/>
+  <path d="M600 250 L600 380 M540 320 L600 380 L660 320" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="400" y="230" width="80" height="80" rx="15" fill="#A78BFA"/>
+  <rect x="720" y="230" width="80" height="80" rx="15" fill="#A78BFA"/>
+  <text x="600" y="500" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="white" text-anchor="middle">100% Private Conversion</text>
+  <text x="600" y="120" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="white" text-anchor="middle">Convert Images Without Uploading</text>
+</svg>

@@ -721,6 +721,9 @@ export const blogPosts = {
     datePublished: '2026-03-01',
     dateModified: '2026-03-13',
     readTime: '4 min',
+    image: '/blog/images/jpeg_vs_jpg_placeholder.svg',
+    imageAlt: 'Comparison showing JPEG and JPG are the same format with equal sign between them',
+    imageTitle: 'JPEG vs JPG - Same Format',
     category: 'FAQ',
     author: 'img-vert Team',
     faqs: [
@@ -809,6 +812,9 @@ export const blogPosts = {
     datePublished: '2026-03-01',
     dateModified: '2026-03-13',
     readTime: '7 min',
+    image: '/blog/images/print_vs_web_placeholder.svg',
+    imageAlt: 'Comparison of print formats (TIFF) vs web formats (WebP) showing different use cases',
+    imageTitle: 'Print vs Web Image Formats',
     category: 'Guide',
     author: 'img-vert Team',
     faqs: [
@@ -910,6 +916,9 @@ export const blogPosts = {
     datePublished: '2026-03-01',
     dateModified: '2026-03-13',
     readTime: '5 min',
+    image: '/blog/images/convert_without_uploading_placeholder.svg',
+    imageAlt: 'Private browser-based image conversion showing files staying on device with lock icon',
+    imageTitle: 'Private Image Conversion - No Upload',
     category: 'Privacy',
     author: 'img-vert Team',
     faqs: [
