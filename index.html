@@ -20,14 +20,16 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://img-vert.web.app/">
   <meta property="og:title" content="Free Online Image Converter – Convert JPG, PNG, WebP, GIF, BMP, TIFF & HEIF">
-  <meta property="og:description" content="Convert your images locally in your browser with 100% privacy. Support for WebP, HEIC, PNG, JPG and more. Fast, free, and no upload required.">
+  <meta property="og:description"
+    content="Convert your images locally in your browser with 100% privacy. Support for WebP, HEIC, PNG, JPG and more. Fast, free, and no upload required.">
   <meta property="og:image" content="https://img-vert.web.app/og-image.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://img-vert.web.app/">
   <meta property="twitter:title" content="Free Online Image Converter – Convert JPG, PNG, WebP, GIF, BMP, TIFF & HEIF">
-  <meta property="twitter:description" content="Convert your images locally in your browser with 100% privacy. Fast, free, and no upload required.">
+  <meta property="twitter:description"
+    content="Convert your images locally in your browser with 100% privacy. Fast, free, and no upload required.">
   <meta property="twitter:image" content="https://img-vert.web.app/og-image.png">
 
   <!-- Structured Data -->
@@ -266,21 +268,52 @@
 </head>
 
 <body>
-  <!-- Hidden SEO-rich content for crawlers (SPA indexing fallback) -->
-  <div style="display: none;">
-    <h1>Free Online Image Converter – JPG, PNG, WebP, HEIC</h1>
-    <p>Convert images locally in your browser with 100% privacy. No files are uploaded to our servers.</p>
-    <h2>Supported Formats</h2>
-    <ul>
-      <li>JPG to WebP Converter</li>
-      <li>PNG to JPG Converter</li>
-      <li>HEIC to JPG Converter</li>
-      <li>WebP to PNG Converter</li>
-      <li>TIFF to PNG Converter</li>
-    </ul>
-    <h2>Why Choose Image-Vert?</h2>
-    <p>Fast, free, and secure image conversion. No watermark, no signup, and 100% private processing.</p>
-  </div>
+  <!-- Visible SEO-rich content for users and crawlers (required for AdSense compliance) -->
+  <!-- This content is rendered server-side and enhanced by React client-side -->
+  <noscript>
+    <div class="max-w-4xl mx-auto px-4 py-8">
+      <h1>Free Online Image Converter – JPG, PNG, WebP, HEIC, BMP, TIFF, GIF</h1>
+      <p>Convert images locally in your browser with 100% privacy. No files are uploaded to our servers. Our free online
+        image converter supports all major formats including JPG, PNG, WebP, HEIC, BMP, TIFF, and GIF.</p>
+
+      <h2>Supported Image Formats</h2>
+      <ul>
+        <li>JPG to WebP, PNG, GIF, BMP Converter</li>
+        <li>PNG to JPG, WebP, GIF, BMP Converter</li>
+        <li>HEIC to JPG, PNG, WebP Converter (iPhone photos)</li>
+        <li>WebP to JPG, PNG Converter</li>
+        <li>TIFF to JPG, PNG Converter</li>
+        <li>GIF to JPG, PNG Converter</li>
+        <li>BMP to JPG, PNG, WebP Converter</li>
+      </ul>
+
+      <h2>Why Choose Image-Vert?</h2>
+      <p>Fast, free, and secure image conversion with complete privacy. No watermark, no signup required, and 100%
+        private processing in your browser.</p>
+
+      <h3>Key Features</h3>
+      <ul>
+        <li><strong>100% Private:</strong> Your images never leave your device</li>
+        <li><strong>No Upload Required:</strong> All processing happens locally in your browser</li>
+        <li><strong>Free to Use:</strong> No registration, no watermarks, no limits</li>
+        <li><strong>Fast Conversion:</strong> Instant processing without server delays</li>
+        <li><strong>Multi-Format Support:</strong> JPG, PNG, WebP, HEIC, BMP, TIFF, GIF</li>
+        <li><strong>Image Resizing:</strong> Adjust dimensions while maintaining aspect ratio</li>
+      </ul>
+
+      <h2>How to Convert Images</h2>
+      <ol>
+        <li>Upload your image by clicking the upload area or dragging and dropping</li>
+        <li>Select your desired output format (JPG, PNG, WebP, GIF, BMP)</li>
+        <li>Optionally adjust the image dimensions</li>
+        <li>Click Convert and download your converted image</li>
+      </ol>
+
+      <p><strong>Note:</strong> JavaScript is required for the interactive converter. Please enable JavaScript to use
+        the full tool.</p>
+    </div>
+  </noscript>
+
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

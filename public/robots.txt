@@ -1,3 +1,3 @@
 User-agent: *
-Allow: /
+Allow: /sitemap.xml
 Sitemap: https://img-vert.web.app/sitemap.xml

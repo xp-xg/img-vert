@@ -67,4 +67,11 @@
   <url><loc>https://img-vert.web.app/blog/jpeg-vs-jpg-difference</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://img-vert.web.app/blog/image-format-print-vs-web</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://img-vert.web.app/blog/convert-images-without-uploading</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <!-- Informational Pages -->
+  <url><loc>https://img-vert.web.app/help</loc><priority>0.5</priority></url>
+  <url><loc>https://img-vert.web.app/disclaimer</loc><priority>0.3</priority></url>
+  <url><loc>https://img-vert.web.app/formats</loc><priority>0.6</priority></url>
+  <url><loc>https://img-vert.web.app/optimization</loc><priority>0.6</priority></url>
+  <url><loc>https://img-vert.web.app/advanced</loc><priority>0.5</priority></url>
+  <url><loc>https://img-vert.web.app/use-cases</loc><priority>0.5</priority></url>
 </urlset>

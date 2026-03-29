@@ -28,12 +28,14 @@ const Navigation = ({ darkMode, setDarkMode }) => {
   }, []);
 
   const navItems = [
-    { path: '/', label: t('home') },
-    { path: '/blog', label: t('blog') },
-    { path: '/formats', label: t('imageFormatsGuide') },
-    { path: '/optimization', label: t('optimizationTips') },
-    { path: '/advanced', label: t('advancedTechniques') },
-    { path: '/use-cases', label: t('industryUseCases') }
+    { path: '/', label: 'Home' },
+    { path: '/about', label: 'About' },
+    { path: '/help', label: 'Help' },
+    { path: '/privacy', label: 'Privacy' },
+    { path: '/terms', label: 'Terms' },
+    { path: '/disclaimer', label: 'Disclaimer' },
+    { path: '/blog', label: 'Blog' },
+    { path: '/contact', label: 'Contact' }
   ];
 
   const changeLanguage = (lng) => {
@@ -55,18 +57,17 @@ const Navigation = ({ darkMode, setDarkMode }) => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`${
-                    location.pathname === item.path
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-200'
-                  } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                  className={`${location.pathname === item.path
+                    ? 'border-indigo-500 text-gray-900 dark:text-white'
+                    : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-200'
+                    } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                 >
                   {item.label}
                 </Link>
               ))}
             </div>
           </div>
-          
+
           {/* Language Selector and Theme Toggle */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-4">
             {/* Language Selector */}
@@ -84,7 +85,7 @@ const Navigation = ({ darkMode, setDarkMode }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {isLangOpen && (
                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-50">
                   <div className="py-1" role="menu" aria-orientation="vertical">
@@ -95,9 +96,8 @@ const Navigation = ({ darkMode, setDarkMode }) => {
                           changeLanguage(lang.code);
                           setIsLangOpen(false);
                         }}
-                        className={`${
-                          i18n.language === lang.code ? 'bg-gray-100 dark:bg-gray-700' : ''
-                        } flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700`}
+                        className={`${i18n.language === lang.code ? 'bg-gray-100 dark:bg-gray-700' : ''
+                          } flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700`}
                         role="menuitem"
                       >
                         <span className="text-lg">{lang.flag}</span>
@@ -108,7 +108,7 @@ const Navigation = ({ darkMode, setDarkMode }) => {
                 </div>
               )}
             </div>
-            
+
             {/* Theme Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
@@ -129,7 +129,7 @@ const Navigation = ({ darkMode, setDarkMode }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       <div className="sm:hidden">
         <div className="pt-2 pb-3 space-y-1">
@@ -137,23 +137,22 @@ const Navigation = ({ darkMode, setDarkMode }) => {
             <Link
               key={item.path}
               to={item.path}
-              className={`${
-                location.pathname === item.path
-                  ? 'bg-indigo-50 border-indigo-500 text-indigo-700 dark:text-indigo-300'
-                  : 'border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 dark:hover:text-gray-200'
-              } block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+              className={`${location.pathname === item.path
+                ? 'bg-indigo-50 border-indigo-500 text-indigo-700 dark:text-indigo-300'
+                : 'border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 dark:hover:text-gray-200'
+                } block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
             >
               {item.label}
             </Link>
           ))}
         </div>
-        
+
         {/* Mobile Language Selector and Theme Toggle */}
         <div className="pt-2 pb-3 space-y-2 border-t border-gray-200 dark:border-gray-700 px-4">
           <div className="flex items-center gap-2">
             <label className="text-sm text-gray-700 dark:text-gray-300">{t('language')}:</label>
-            <select 
-              value={i18n.language} 
+            <select
+              value={i18n.language}
               onChange={(e) => changeLanguage(e.target.value)}
               className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm flex-1"
             >
@@ -165,7 +164,7 @@ const Navigation = ({ darkMode, setDarkMode }) => {
               <option value="ja">{t('japanese')}</option>
             </select>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <label className="text-sm text-gray-700 dark:text-gray-300">{t('theme')}:</label>
             <button

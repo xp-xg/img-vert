@@ -8,41 +8,9 @@ const HelpPage = () => {
   return (
     <div className="min-h-screen transition-colors duration-300 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white">
       <div className="container mx-auto px-4 py-8">
-        <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <div>
-            <AppLogo />
-            <p className="text-gray-600 dark:text-gray-400 mt-2">{t('description')}</p>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            {/* Language Selector */}
-            <select 
-              value={localStorage.getItem('language') || 'en'} 
-              onChange={(e) => {
-                localStorage.setItem('language', e.target.value);
-                window.location.reload();
-              }}
-              className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
-            >
-              <option value="en">{t('english')}</option>
-              <option value="es">{t('spanish')}</option>
-              <option value="fr">{t('french')}</option>
-              <option value="de">{t('german')}</option>
-              <option value="zh">{t('chinese')}</option>
-              <option value="ja">{t('japanese')}</option>
-            </select>
-            
-            {/* Theme Toggle */}
-            <button
-              onClick={() => {
-                document.documentElement.classList.toggle('dark');
-                localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
-              }}
-              className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded px-4 py-2 flex items-center gap-2"
-            >
-              {document.documentElement.classList.contains('dark') ? t('lightMode') : t('darkMode')}
-            </button>
-          </div>
+        <header className="mb-12">
+          <AppLogo />
+          <p className="text-gray-600 dark:text-gray-400 mt-2">{t('description')}</p>
         </header>
 
         <main className="max-w-4xl mx-auto">
@@ -50,7 +18,7 @@ const HelpPage = () => {
             <div className="text-center mb-4">
               <h1 className="text-3xl font-bold mb-2 text-blue-600 dark:text-blue-400">{t('helpTitle')}</h1>
             </div>
-            
+
             <div className="space-y-6">
               <section>
                 <h3 className="text-xl font-semibold mb-3">{t('gettingStarted')}</h3>
@@ -62,7 +30,7 @@ const HelpPage = () => {
                   <li>{t('step5')}</li>
                 </ol>
               </section>
-              
+
               <section>
                 <h3 className="text-xl font-semibold mb-3">{t('supportedFormatsTitle')}</h3>
                 <ul className="list-disc list-inside space-y-2 mb-4">
@@ -70,13 +38,13 @@ const HelpPage = () => {
                   <li>{t('outputFormats')}</li>
                 </ul>
               </section>
-              
+
               <section>
                 <h3 className="text-xl font-semibold mb-3">{t('imageQuality')}</h3>
                 <p className="mb-2">{t('imageQualityDesc1')}</p>
                 <p>{t('imageQualityDesc2')}</p>
               </section>
-              
+
               <section>
                 <h3 className="text-xl font-semibold mb-3">{t('troubleshooting')}</h3>
                 <ul className="list-disc list-inside space-y-2 mb-4">
@@ -86,13 +54,13 @@ const HelpPage = () => {
                   <li>{t('troubleshootingItem4')}</li>
                 </ul>
               </section>
-              
+
               <section>
                 <h3 className="text-xl font-semibold mb-3">{t('privacyInfo')}</h3>
                 <p className="mb-2">{t('privacyInfoDesc1')}</p>
                 <p>{t('privacyInfoDesc2')}</p>
               </section>
-              
+
               <section>
                 <h3 className="text-xl font-semibold mb-3">{t('needMoreHelp')}</h3>
                 <p>{t('needMoreHelpDesc')}</p>
@@ -103,12 +71,12 @@ const HelpPage = () => {
 
         <footer className="mt-6 text-center text-gray-600 dark:text-gray-400 text-sm">
           <div className="flex flex-wrap justify-center gap-4 mb-2">
-            <a href="/about" className="hover:underline">{t('about')}</a>
-            <a href="/privacy" className="hover:underline">{t('privacyPolicy')}</a>
-            <a href="/disclaimer" className="hover:underline">{t('disclaimer')}</a>
-            <a href="/terms" className="hover:underline">{t('termsOfService')}</a>
-            <a href="/contact" className="hover:underline">{t('contact')}</a>
-            <a href="/help" className="hover:underline">{t('help')}</a>
+            <a href="/about" className="hover:underline">About</a>
+            <a href="/privacy" className="hover:underline">Privacy Policy</a>
+            <a href="/disclaimer" className="hover:underline">Disclaimer</a>
+            <a href="/terms" className="hover:underline">Terms of Service</a>
+            <a href="/contact" className="hover:underline">Contact</a>
+            <a href="/help" className="hover:underline">Help</a>
           </div>
           <p>{t('copyright', { year: new Date().getFullYear() })}</p>
         </footer>
