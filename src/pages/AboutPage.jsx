@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AppLogo from '../components/AppLogo';
+import Footer from '../components/Footer';
 
 /**
  * AboutPage - Comprehensive About page with E-E-A-T signals
@@ -446,18 +447,7 @@ const AboutPage = () => {
           </article>
         </main>
 
-        {/* Footer */}
-        <footer className="mt-12 py-8 border-t border-gray-200 dark:border-gray-800">
-          <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-            <p>© {new Date().getFullYear()} img-vert. All rights reserved.</p>
-            <div className="flex justify-center gap-4 mt-4">
-              <Link to="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-blue-600 dark:hover:text-blue-400">Terms of Service</Link>
-              <Link to="/disclaimer" className="hover:text-blue-600 dark:hover:text-blue-400">Disclaimer</Link>
-              <Link to="/contact" className="hover:text-blue-600 dark:hover:text-blue-400">Contact</Link>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </div>
   );

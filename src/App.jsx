@@ -23,6 +23,7 @@ import BlogPostPage from './pages/BlogPostPage';
 import { conversionData } from './data/conversionData';
 import ImageConverter from './components/ImageConverter';
 import SEOContent from './components/SEOContent';
+import Footer from './components/Footer';
 import errorLogger from './services/errorLogger';
 
 // ShareButton component for social media sharing
@@ -741,6 +742,7 @@ const MainApp = ({ darkMode, setDarkMode }) => {
               </div>
             </div>
           </footer>
+          <Footer />
         </div>
       </div>
     </ErrorBoundary>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AppLogo from '../components/AppLogo';
+import Footer from '../components/Footer';
 
 const ContactPage = () => {
   const { t } = useTranslation();
@@ -168,17 +169,7 @@ const ContactPage = () => {
           </section>
         </main>
 
-        <footer className="mt-6 text-center text-gray-600 dark:text-gray-400 text-sm">
-          <div className="flex flex-wrap justify-center gap-4 mb-2">
-            <a href="/about" className="hover:underline">About</a>
-            <a href="/privacy" className="hover:underline">Privacy Policy</a>
-            <a href="/disclaimer" className="hover:underline">Disclaimer</a>
-            <a href="/terms" className="hover:underline">Terms of Service</a>
-            <a href="/contact" className="hover:underline">Contact</a>
-            <a href="/help" className="hover:underline">Help</a>
-          </div>
-          <p>{t('copyright', { year: new Date().getFullYear() })}</p>
-        </footer>
+        <Footer />
       </div>
     </div>
   );
