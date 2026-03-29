@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const ImageFormatsGuide = () => {
@@ -23,7 +24,7 @@ const ImageFormatsGuide = () => {
           <p className="text-gray-700 dark:text-gray-300 mb-6">
             {t('understandingImageFormatsDesc')}
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
               <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-3">
@@ -37,7 +38,7 @@ const ImageFormatsGuide = () => {
                 <li>{t('losslessFormatExample')}</li>
               </ul>
             </div>
-            
+
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
               <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-3">
                 {t('whenToUseEachFormat')}
@@ -58,7 +59,7 @@ const ImageFormatsGuide = () => {
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
             {t('popularImageFormats')}
           </h2>
-          
+
           <div className="space-y-6">
             {/* PNG Format */}
             <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-5">
@@ -97,7 +98,7 @@ const ImageFormatsGuide = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* JPEG Format */}
             <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-5">
               <div className="flex items-start gap-4">
@@ -135,7 +136,7 @@ const ImageFormatsGuide = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* WebP Format */}
             <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-5">
               <div className="flex items-start gap-4">
@@ -173,7 +174,7 @@ const ImageFormatsGuide = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* GIF Format */}
             <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-5">
               <div className="flex items-start gap-4">
@@ -236,6 +237,40 @@ const ImageFormatsGuide = () => {
           <p className="text-gray-700 dark:text-gray-300">
             {t('formatConclusion')}
           </p>
+        </section>
+
+        {/* Internal Linking Section - SEO */}
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold mb-6">Related Resources</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <h3 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-400">More Guides</h3>
+              <ul className="space-y-2">
+                <li><Link to="/optimization" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:underline">→ Image Optimization Tips</Link></li>
+                <li><Link to="/advanced" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:underline">→ Advanced Techniques</Link></li>
+                <li><Link to="/use-cases" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:underline">→ Industry Use Cases</Link></li>
+              </ul>
+            </div>
+            <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+              <h3 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-400">Blog Posts</h3>
+              <ul className="space-y-2">
+                <li><Link to="/blog/what-is-webp-format" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:underline">→ What is WebP Format?</Link></li>
+                <li><Link to="/blog/png-vs-jpg" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:underline">→ PNG vs JPG Comparison</Link></li>
+                <li><Link to="/blog/avif-vs-webp" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:underline">→ AVIF vs WebP</Link></li>
+                <li><Link to="/blog" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 hover:underline">→ View All Posts</Link></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="mt-12 p-8 rounded-2xl text-center bg-gradient-to-r from-blue-600 to-blue-500 text-white">
+          <h2 className="text-2xl font-bold mb-4">Ready to Convert Your Images?</h2>
+          <p className="mb-6 text-blue-100">Use our free online converter - fast, private, and no upload required.</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/" className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors">Start Converting</Link>
+            <Link to="/help" className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors">Help Center</Link>
+          </div>
         </section>
       </article>
     </div>
